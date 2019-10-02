@@ -1,0 +1,7 @@
+#tabela{
+    border-collapse:collapse;
+}
+ 
+#tabela tbody tr{
+    cursor:pointer;
+}

@@ -1,4 +1,4 @@
-# MRAR_plus_teste
+# MRAR_plus - Atualizado para rodar com o PHP7
 # MRAR+
 Algoritmo de Mineração de Regras de Associação Multirrelação em datasets na Web de Dados.
 
@@ -13,6 +13,9 @@ OLIVEIRA, F. A.; COSTA, R. L.; GOLDSCHMIDT, R. R. ; CAVALCANTI, M. C. Mineraçã
 2-
 OLIVEIRA, F. A.; MARTINS, Y. C.; ROCHA, D. S. B.; SIQUEIRA, M. F.; SILVA, L. A. E.; COSTA, R. L.; GOLDSCHMIDT, R. ; CAVALCANTI, M. C. Jabotg: Extending the herbarium dataset frontiers. In: INTERNATIONAL CONFERENCE ON METADATA AND SEMANTICS RESEARCH (MTSR’17), 11th., 2017. Electronic proceedings... Tallinn: Book of Abstracts and Posters, 2017, p. 45–53. Disponível em: http://www.mtsr-conf.org/2017/archived/files/MTSR17_BOOK_OF_ABSTRACTS_AND_POSTERS_v5_final.pdf. Acesso em: 11/10/2018.
 
+3- 
+DE OLIVEIRA, FELIPE ALVES; COSTA, RAQUEL LOPES ; GOLDSCHMIDT, RONALDO R. ; CAVALCANTI, MARIA CLÁUDIA . Multirelation Association Rule Mining on Datasets of the Web of Data. In: the XV Brazilian Symposium, 2019, Aracaju. Proceedings of the XV Brazilian Symposium on Information Systems - SBSI'19. New York: ACM Press, 2019. v. 15. p. 1-61. Disponível em: https://dl.acm.org/citation.cfm?doid=3330204.3330271. Acessado em 10/10/2019.
+
 
 #Configuração da máquina utilizada nos testes:
 
@@ -20,11 +23,11 @@ Processador - Intel I7
 
 Memória - 8gb
 
-#XAMPP Server
-
-PHP 5.6 / 7
+PHP 5.6 / 7.3
 
 #Ajuste de configuração no arquivo php.ini:
+Esses ajustes são necessários para quando o algorítimo for executado com datasets grandes.
+Esses valores podem ser alterados conforme a necessidade.
 
 max_execution_time=5000
 

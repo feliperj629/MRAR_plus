@@ -91,13 +91,17 @@ if(isset($radio))
 	
 		if($radio == $arq)
 		{
-			$arquivo = "/MRAR_plus/".$arq;
+			//Caso o arquivo não seja lida, basta incluir o caminho completo até a pasta de dados.
+			$arquivo = $_SERVER['DOCUMENT_ROOT']."/".$arq;
 			$nomegrafo= $arq;
 			$Classe->nomegrafo = $arq;
 		}
 	}
 }
 
+// echo '<pre> ';
+// print_r($_SERVER['DOCUMENT_ROOT']);
+// echo '</pre>';
   //------------------------------------------------------------------------------------------------------
 if(!empty($arquivo))
 	$DS = $Classe->PegadadosJson($arquivo,'dados',$_REQUEST['best_support']);

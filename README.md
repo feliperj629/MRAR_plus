@@ -23,7 +23,15 @@ Processador - Intel I7
 
 Memória - 8gb
 
-PHP 5.6 / 7.3
+Recomendações:
+PHP 7.3 ou superior no site https://www.php.net/downloads.php;
+
+Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online ex. (https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
+
+Ideal:
+Criar uma pasta e instalar o php na raiz do sistema "C:\php";
+Baixar a pasta do MRAR_plus também na raiz do sistema "C:\MRAR_plus";
+
 
 #Ajuste de configuração no arquivo php.ini:
 Esses ajustes são necessários para quando o algorítimo for executado com datasets grandes.

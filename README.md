@@ -19,17 +19,17 @@ DE OLIVEIRA, FELIPE ALVES; COSTA, RAQUEL LOPES ; GOLDSCHMIDT, RONALDO R. ; CAVAL
 
 #Configuração da máquina utilizada nos testes:
 
-Processador - Intel I7
-
-Memória - 8gb
+Processador - Intel I7 com 8gb de memória.
 
 Recomendações:
-PHP 7.3 ou superior no site https://www.php.net/downloads.php;
 
-Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online ex. (https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
+Utilizar o PHP 7.3 ou superior, disponível no site https://www.php.net/downloads.php;
+
+Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online (https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
 
 Ideal:
 Criar uma pasta e instalar o php na raiz do sistema "C:\php";
+
 Baixar a pasta do MRAR_plus também na raiz do sistema "C:\MRAR_plus";
 
 

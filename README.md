@@ -1,5 +1,5 @@
-# MRAR_plus - Atualizado para rodar com o PHP7
-# MRAR+
+# MRAR+ / MRAR_plus - Atualizado para rodar com o PHP7
+
 Algoritmo de Mineração de Regras de Associação Multirrelação em datasets na Web de Dados.
 
 Esse algoritmo foi desenvolvido como produto da seguinte dissertação de mestrado: Mineração de Regras de Associação de Multirrelação em datasets na Web de Dados, 2018, disponível em (http://www.comp.ime.eb.br/pos/?l=0&p=29&q=2018_3).
@@ -19,11 +19,19 @@ DE OLIVEIRA, FELIPE ALVES; COSTA, RAQUEL LOPES ; GOLDSCHMIDT, RONALDO R. ; CAVAL
 
 #Configuração da máquina utilizada nos testes:
 
-Processador - Intel I7
+Processador - Intel I7 com 8gb de memória.
 
-Memória - 8gb
+Recomendações:
 
-PHP 5.6 / 7.3
+Utilizar o PHP 7.3 ou superior, disponível no site https://www.php.net/downloads.php;
+
+Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online (https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
+
+Ideal:
+Criar uma pasta e instalar o php na raiz do sistema "C:\php";
+
+Baixar a pasta do MRAR_plus também na raiz do sistema "C:\MRAR_plus";
+
 
 #Ajuste de configuração no arquivo php.ini:
 Esses ajustes são necessários para quando o algorítimo for executado com datasets grandes.

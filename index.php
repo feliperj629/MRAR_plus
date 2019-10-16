@@ -950,8 +950,8 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                 <form role="form" action="index.php" method="post">
                 <input type="hidden" name="op" id="op" value="<?php echo $op;?>">
                     <?php
-                    //chdir( 'Rules/' );
-                    $pasta = 'Rules/';
+                    //chdir( 'rules/' );
+                    $pasta = 'rules/';
                         // $arquivos = glob("{*.json,*.png,*.jpg,*.jpeg,*.gif}", GLOB_BRACE);
                         $arquivos = glob("$pasta{*.json}", GLOB_BRACE);
 

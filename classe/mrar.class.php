@@ -1139,6 +1139,7 @@ function FormataRules($Rules,$List_ItemChains){
 
 //List_ItemChains
   // print '<pre>';
+  // print 'aqui';
   // print_r($result3);
   // print '</pre>';
   // exit;

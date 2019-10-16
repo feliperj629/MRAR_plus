@@ -445,7 +445,8 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
 
 
     $htmlTable = $Classe->MontaTabela($Rules);
-
+	//$_SESSION['s_Rules'] = null;
+	$FormatacaoRules = null;
     $FormatacaoRules = $Classe->FormataRules($Rules,$List_ItemChains);
 
     if(!empty($FormatacaoRules))

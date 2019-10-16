@@ -21,24 +21,50 @@ DE OLIVEIRA, FELIPE ALVES; COSTA, RAQUEL LOPES ; GOLDSCHMIDT, RONALDO R. ; CAVAL
 
 Processador - Intel I7 com 8gb de memória.
 
-Recomendações:
+
+#No Windows
+
+Passos:
+
+1- Faça o download do PHP para configura-lo no Windows
+2- Use o servidor embutido do PHP.
+3- Clone este repositório e o instale na pasta raiz do sismtema, ex. "C:\MRAR_plus". 
+
+Obs. Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online. Ex.(https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
+
+Ideal: Criar uma pasta e instalar o php na raiz do sistema. Ex. "C:\php";
+Baixar os arquivos do MRAR_plus também na raiz do sistema. Ex. "C:\MRAR_plus";
+
+Em seguida basta acessar a pasta onde está o MRAR+, verificar se o sistema está reconhecendo os comendos do php e startar o servidor php.
+
+Comandos:
+
+cd \MRAR_plus\
+
+php -version
+
+php -S localhost:8000
+
+Se tudo estiver ok basta o acessar o link do localhost (http://localhost:8000).
+
+
+#No Linux
+
+Basta instalar o apache 2 e o PHP7:
+
+Exemplo de tutorial online "https://www.digitalocean.com/community/tutorials/como-instalar-a-pilha-linux-apache-mysql-php-lamp-no-ubuntu-18-04-pt".
+
+
+#Recomendações:
 
 Utilizar o PHP 7.3 ou superior, disponível no site https://www.php.net/downloads.php;
 
-Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online (https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
-
-Ideal:
-Criar uma pasta e instalar o php na raiz do sistema "C:\php";
-
-Baixar a pasta do MRAR_plus também na raiz do sistema "C:\MRAR_plus";
-
-
-#Ajuste de configuração no arquivo php.ini:
+#Em caso de erro "HTTP ERROR 500" ajuste a configuração no arquivo php.ini:
 Esses ajustes são necessários para quando o algorítimo for executado com datasets grandes.
 Esses valores podem ser alterados conforme a necessidade.
 
-max_execution_time=5000
+max_execution_time = 120
 
-max_input_time=5000
+max_input_time = 120
 
-memory_limit=1024M
+memory_limit = 512M

@@ -688,21 +688,18 @@ function ConvertConviction($Rules, $Conviction_min, $Conviction_max){
 
 
 function PegadadosJson($arquivo,$key,$bestsup){
-  // print '<br>$arquivo: '.$arquivo;
-  // print '<br>$key: '.$key;
-  // print '<br>$bestsup: '.$bestsup;
-  // exit;
-  // print $arquivo;
-  $info = file_get_contents($arquivo);
-  $DS_total = json_decode($info, true);
-	
+	// print '<br>$arquivo: '.$arquivo;
+	// print '<br>$key: '.$key;
+	// print '<br>$bestsup: '.$bestsup;
+	// exit;
+	// print $arquivo;
+	$info = file_get_contents($arquivo);
+	$DS_total = json_decode($info, true);
+
+	// print '<br> Total array Json:'.count($DS_total[$key]);
+	// exit;
 	if(empty($DS_total))
-	{
-		// print '<br>$arquivo: '.$arquivo;
-		// print '<br>$key: '.$key;
-		// print '<br> Total array Json:'.count($DS_total[$key]);
-		// exit;
-		
+	{	
 		switch (json_last_error()) 
 		{	
 			case JSON_ERROR_NONE:

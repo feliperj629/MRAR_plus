@@ -1039,6 +1039,7 @@ function FormataRules($Rules,$List_ItemChains){
         $ConsRules = explode("#", $regras['Consequent']);
 
         // print_r($AntRules);
+        // print_r($ConsRules);
         // exit;
         //$g = count($AntRules);
         //if($g > 1){

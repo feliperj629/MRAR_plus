@@ -2,7 +2,7 @@
 
 Algoritmo de Mineração de Regras de Associação Multirrelação em datasets na Web de Dados.
 
-Esse algoritmo foi desenvolvido como produto da seguinte dissertação de mestrado: Mineração de Regras de Associação de Multirrelação em datasets na Web de Dados, 2018, disponível em (http://www.comp.ime.eb.br/pos/?l=0&p=29&q=2018_3).
+Esse algoritmo foi desenvolvido como produto da seguinte dissertação de mestrado: Mineração de Regras de Associação de Multirrelação em datasets na Web de Dados, 2018, disponível em (http://www.comp.ime.eb.br/pos/?l=0&p=29&q=2018_3). Uma cópia em PDF está disponível dentro da pasta docs.
 
 Artigos científicos foram publicados com informações relacionadas a esse trabalho.
 Segue abaixo uma lista dos trabalhos publicados:

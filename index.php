@@ -21,6 +21,13 @@ if(isset($_REQUEST['salverules']))
 	$salverules = $_REQUEST['salverules'];
 if(isset($_REQUEST['op']))
 	$op = $_REQUEST['op'];
+if(isset($_REQUEST['edtdelimiter']))
+	$delimiter = $_REQUEST['edtdelimiter'];
+else	
+	$delimiter = '||';
+
+if(isset($delimiter))
+	$Classe->delimiter = $delimiter;
 
 // print '<pre>';
 // print_r($_REQUEST);
@@ -270,8 +277,8 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     //CRIA $Candidates
     for ($i=1; $i < $total; $i++) {    
         for ($j=($i+1); $j <= $total; $j++) { 
-        $LIC1 = explode("#", $LLICs[$i]['LOC']);
-        $LIC2 = explode("#", $LLICs[$j]['LOC']);    
+        $LIC1 = explode($delimiter, $LLICs[$i]['LOC']);
+        $LIC2 = explode($delimiter, $LLICs[$j]['LOC']);    
         //Verifica se os elementos na posição L-1 (ex: 2ª posição do array com 2 elementos), de $LIC1[$L-1] == $LIC2[$L-1]
         //se as últimas posições dos arrays são iguais.
         if($LIC1[$L-1] == $LIC2[$L-1]){
@@ -307,15 +314,15 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
       list ($Chains1,$Chains2,$Chains3) = $CIS;
 
       //print $Chains1.' - '.$Chains2.' - '.$Chains3;
-      $List_1 = explode("#", $List_ItemChains[$Chains1]['LOE']);
-      $List_2 = explode("#", $List_ItemChains[$Chains2]['LOE']);
-      $List_3 = explode("#", $List_ItemChains[$Chains3]['LOE']);
+      $List_1 = explode($delimiter, $List_ItemChains[$Chains1]['LOE']);
+      $List_2 = explode($delimiter, $List_ItemChains[$Chains2]['LOE']);
+      $List_3 = explode($delimiter, $List_ItemChains[$Chains3]['LOE']);
      
       // print '<br><br>------------------------<br>';
       // print_r(array_intersect($List_1, $List_2, $List_3));
       // print '<br>------------------------<br><br><br>';
       // exit;
-        $itens = implode("#",array_intersect($List_1, $List_2, $List_3));
+        $itens = implode($delimiter,array_intersect($List_1, $List_2, $List_3));
         $qtd_itens = count(array_intersect($List_1, $List_2, $List_3));
         $support = $Classe->CalcularSuporte($qtd_itens);   
         // print $support;
@@ -323,7 +330,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
         if($support >= $Classe->minsup){
           $i++;
 
-          $LLICs[$i]['LOC'] = implode("#", $CIS);
+          $LLICs[$i]['LOC'] = implode($delimiter, $CIS);
           $LLICs[$i]['LOE'] = $qtd_itens; //quantidades de itens que correspondem a intercessão dos elementos de cada $CIS
           $LLICs[$i]['LOE_var'] = $itens;
           $LLICs[$i]['Support'] = $support;
@@ -387,12 +394,12 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
           // exit();
             $i++;    
             if($i>1)
-              $a = "#";
+              $a = $delimiter;
             //pegar todos os elementos para buscar os links externos primeiro converte o string para array remove os itens duplicados
             if(!empty($Externo_EndPoints) && !empty($Externo_Entidades)){
-              $EntitiesExternos .= $a.$value['LOE_var']."#".$value['EndPoints_Ant']."#".$value['EndPoints_Cons'];
+              $EntitiesExternos .= $a.$value['LOE_var'].$delimiter.$value['EndPoints_Ant'].$delimiter.$value['EndPoints_Cons'];
             }elseif(!empty($Externo_EndPoints) && empty($Externo_Entidades)){
-              $EntitiesExternos .= $a.$value['EndPoints_Ant']."#".$value['EndPoints_Cons'];
+              $EntitiesExternos .= $a.$value['EndPoints_Ant'].$delimiter.$value['EndPoints_Cons'];
             }elseif(empty($Externo_EndPoints) && !empty($Externo_Entidades)){
               $EntitiesExternos .= $a.$value['LOE_var'];
             }else{
@@ -401,7 +408,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
             }
 
         }
-        $Entitiesfinal = array_unique(explode("#", $EntitiesExternos));
+        $Entitiesfinal = array_unique(explode($delimiter, $EntitiesExternos));
         // print '<pre>';
         // print_r($Entitiesfinal);
         // print '</pre>';
@@ -878,29 +885,9 @@ if(!empty($_REQUEST['edtMetricConviction'])){
               </a>
 
               <div id="collapseExample" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-               <!--  <div class="panel-body">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="edtMetricMinSup">Metrics Support</label>
-                      <input type="text" class="form-control" value="<?php// echo $MetricMinSup; ?>" id="edtMetricMinSup" name="edtMetricMinSup" placeholder="M. MinSup">
-                    </div>                   
-                    <div class="form-group">
-                      <label for="edtMetricMinConf">Metrics Confidence</label>
-                      <input type="text" class="form-control"  value="<?php //echo $MetricMinConf; ?>" id="edtMetricMinConf" name="edtMetricMinConf" placeholder="M. MinConf">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="edtMetricLift">Metrics Lift</label>
-                      <input type="text" class="form-control" value="<?php// echo $MetricLift; ?>" id="edtMetricLift" name="edtMetricLift" placeholder="M. Lift">
-                    </div>                   
-                    <div class="form-group">
-                      <label for="edtMetricConviction">Metrics Conviction</label>
-                      <input type="text" class="form-control"  value="<?php //echo $MetricConviction; ?>" id="edtMetricConviction" name="edtMetricConviction" placeholder="M. Conviction">
-                    </div>
-                  </div>
-                </div> -->
-               	
+				
+               	<div class="row">
+               	<div class="col-md-12">
                     <div class="checkbox">
                       <label>
                         <input type="checkbox" name="Entities_Var" <?php if(isset($_REQUEST['Entities_Var']) && $_REQUEST['Entities_Var'] == 'on') echo 'checked'; ?> > Show Entities
@@ -916,6 +903,15 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                         <input type="checkbox" name="best_support" <?php if(isset($_REQUEST['best_support']) && $_REQUEST['best_support'] == 'on') echo 'checked'; ?> > Apply the best support 
                       </label>
                     </div>         
+				</div>				
+				</div>
+				
+				<div class="col-md-3">
+					<div class="form-group">
+					  <label for="edtdelimiter">Default delimiter</label>
+					  <input type="text" class="form-control" value="<?php echo $delimiter; ?>" id="edtdelimiter" name="edtdelimiter" maxlength="2" size="2" required>
+					</div>
+				</div>
               </div>
             </div>
 

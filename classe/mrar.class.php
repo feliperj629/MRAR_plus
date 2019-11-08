@@ -16,6 +16,8 @@ class Mrar
     var $minconf;
     var $minlevel;
     var $maxlevel;
+	
+    var $delimiter;
 
     var $bestsup;
     
@@ -364,7 +366,7 @@ function GenerateItemChains($EndpointEntity, $Relations_Parameter, $Entities_Par
           // print '</pre>';   
           // exit;
                                  
-          $entidades = implode("#", $Entities_Var);//Junta array separando por vírgula       
+          $entidades = implode($this->delimiter, $Entities_Var);//Junta array separando por vírgula       
             
           //Criando novo ItemChain
           // $ChainID = $this->ChainID;
@@ -397,10 +399,10 @@ function GenerateItemChains($EndpointEntity, $Relations_Parameter, $Entities_Par
         // print 'Entities_Var:<br> ';
         // print_r($Entities_Var);
         // exit;
-        //$Entities_Var_endpoint = $endpoint_Comp."#".implode("#", $Entities_Var);
+        //$Entities_Var_endpoint = $endpoint_Comp.$this->delimiter.implode($this->delimiter, $Entities_Var);
 
         foreach ($Relations_Var as $key => $relacao) {
-           $this->GenerateItemChains($EndpointEntity, $Relations_Parameter."#".$relacao, $this->Entities_V, $level+1,$Entities_Var_endpoint);
+           $this->GenerateItemChains($EndpointEntity, $Relations_Parameter.$this->delimiter.$relacao, $this->Entities_V, $level+1,$Entities_Var_endpoint);
         }
     }
    // Mostrar List_ItemChains
@@ -426,10 +428,10 @@ $total = count($List_ItemChains);
   {    
     for ($j=($i+1); $j <= $total; $j++) 
     {         
-        $IC1['LOE'] = explode("#", $List_ItemChains[$i]['LOE']);
+        $IC1['LOE'] = explode($this->delimiter, $List_ItemChains[$i]['LOE']);
         $IC1['ChainID'] = $List_ItemChains[$i]['ChainID'];
         
-        $IC2['LOE'] = explode("#", $List_ItemChains[$j]['LOE']);
+        $IC2['LOE'] = explode($this->delimiter, $List_ItemChains[$j]['LOE']);
         $IC2['ChainID'] = $List_ItemChains[$j]['ChainID'];
 
         
@@ -445,9 +447,9 @@ $total = count($List_ItemChains);
         $LOE = count(array_intersect($IC1['LOE'], $IC2['LOE']));
        
 
-       // if($IC1[ChainID]."#". $IC2[ChainID] == '1,2,10'){
+       // if($IC1[ChainID].$this->delimiter. $IC2[ChainID] == '1,2,10'){
         // print_r(array_intersect($IC1[LOE], $IC2[LOE]));
-        // print '<br>LOC: '.$IC1[ChainID]."#". $IC2[ChainID];
+        // print '<br>LOC: '.$IC1[ChainID].$this->delimiter. $IC2[ChainID];
         // print '<br>LOE: '.$LOE;
         // exit;
         //}
@@ -463,11 +465,11 @@ $total = count($List_ItemChains);
 
         if($support >= $this->minsup)
         {
-          // print implode("#", $IC1[LOE]).' --- '.implode("#", $IC2[LOE]).' -> '.$LOE.' -> '.$support.'<br>';            
+          // print implode($this->delimiter, $IC1[LOE]).' --- '.implode($this->delimiter, $IC2[LOE]).' -> '.$LOE.' -> '.$support.'<br>';            
             $id++;
-            $LOE_var = implode("#", array_intersect($IC1['LOE'], $IC2['LOE']));//une array separando por vírgula
+            $LOE_var = implode($this->delimiter, array_intersect($IC1['LOE'], $IC2['LOE']));//une array separando por vírgula
 
-            $LargeItemChain[$id]['LOC'] =   $IC1['ChainID']."#". $IC2['ChainID']; // Uniao de $a e $b   //List of ChainIDs (LOC)
+            $LargeItemChain[$id]['LOC'] =   $IC1['ChainID'].$this->delimiter. $IC2['ChainID']; // Uniao de $a e $b   //List of ChainIDs (LOC)
             $LargeItemChain[$id]['LOE'] = $LOE/*.' {'.$LOE_var.'}'*/; //$LOE QTD de Entidades
             $LargeItemChain[$id]['LOE_var'] = $LOE_var;
             $LargeItemChain[$id]['Support'] = $support; 
@@ -475,7 +477,7 @@ $total = count($List_ItemChains);
           if($ExtLink)
               $Entities_DtExt[$id] = $LOE_var;             
           
-            // $Entities_DtExt[$id] = implode("#", array_intersect($IC1['LOE'], $IC2['LOE']));  
+            // $Entities_DtExt[$id] = implode($this->delimiter, array_intersect($IC1['LOE'], $IC2['LOE']));  
 
         }
 
@@ -491,7 +493,7 @@ $total = count($List_ItemChains);
   
   //juntar array e remover duplicidade
   if($ExtLink)
-      $this->Entities_DtExt = array_unique(explode("#", implode("#", $Entities_DtExt)));
+      $this->Entities_DtExt = array_unique(explode($this->delimiter, implode($this->delimiter, $Entities_DtExt)));
   
   // print '$this->Entities_DtExt: <br><br>';
   // print_r($this->Entities_DtExt);  
@@ -530,7 +532,7 @@ function GenerateRules($List_LargeItemChains){
       // print_r($this->List_ItemChains);
       // print '</pre>';
       // exit;
-        $LICs = explode("#", $LIC['LOC']);
+        $LICs = explode($this->delimiter, $LIC['LOC']);
        
         foreach ($LICs as $key => $ChainID) 
         {
@@ -547,8 +549,8 @@ function GenerateRules($List_LargeItemChains){
               //   // print   '$ant :'.$ant;
               //       $EndPoints_Ant[$ant] = $this->List_ItemChains[$ant]['endpoint_Comp'];
               // }
-              //      $EndPoints_Ant = implode("#", $EndPoints_Ant);
-              //      $EndPoints_Ant = explode("#", $EndPoints_Ant);
+              //      $EndPoints_Ant = implode($this->delimiter, $EndPoints_Ant);
+              //      $EndPoints_Ant = explode($this->delimiter, $EndPoints_Ant);
               //      $EndPoints_Ant = array_unique($EndPoints_Ant);
               //      $EndPoints_Cons = $this->List_ItemChains[$Consequent]['endpoint_Comp'];
               // print_r($EndPoints_Ant);
@@ -563,8 +565,8 @@ function GenerateRules($List_LargeItemChains){
               // print '</pre>';
             //FIM - pegar todos os endpoints do Antecedente (principal e Intermediario)
 
-            $Antecedent = implode("#", $Antecedent);
-            if (strpos($Antecedent, "#")) 
+            $Antecedent = implode($this->delimiter, $Antecedent);
+            if (strpos($Antecedent, $this->delimiter)) 
             { 
               //pegar valor de suporte do antecedente, quando for mais de um itemchains
               foreach ($List_LargeItemChains as $List) {
@@ -641,7 +643,7 @@ function GenerateRules($List_LargeItemChains){
                 $Rules[$j]['Lift'] = $Lift; 
                 $Rules[$j]['Conviction'] = $Conviction; 
                // $Rules[$j]['Metrics'] = $this->CalcTotalMetrics($LIC['Support'],$Confidence,$Lift,$Conviction); 
-                // $Rules[$j]['EndPoints_Ant'] = implode("#",$EndPoints_Ant);
+                // $Rules[$j]['EndPoints_Ant'] = implode($this->delimiter,$EndPoints_Ant);
                 // $Rules[$j]['EndPoints_Cons'] = $EndPoints_Cons;
             }
         }
@@ -1035,8 +1037,8 @@ function FormataRules($Rules,$List_ItemChains){
 
     foreach ($Rules as $keys => $regras) 
     {
-        $AntRules = explode("#", $regras['Antecedent']);
-        $ConsRules = explode("#", $regras['Consequent']);
+        $AntRules = explode($this->delimiter, $regras['Antecedent']);
+        $ConsRules = explode($this->delimiter, $regras['Consequent']);
 
         // print_r($AntRules);
         // print_r($ConsRules);
@@ -1058,7 +1060,7 @@ function FormataRules($Rules,$List_ItemChains){
                 // print '<pre>';
                 // print_r($item);
                 // exit; 
-                $rel = explode("#", $item['LOR']);
+                $rel = explode($this->delimiter, $item['LOR']);
                 $count = count($rel);
 
                 $result = array_reverse($rel);
@@ -1095,7 +1097,7 @@ function FormataRules($Rules,$List_ItemChains){
                 // print '<pre>';
                 // print_r($itemCons);
                 // exit;                         
-                $relCons = explode("#", $itemCons['LOR']);
+                $relCons = explode($this->delimiter, $itemCons['LOR']);
                 $countCons = count($relCons);
                 //print($countCons);
                 

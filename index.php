@@ -3,9 +3,8 @@
 // ini_set('display_errors','1');
 error_reporting(0); //Oculta os Alertas do Servidor Web.
 
-//phpinfo(); 
+//phpinfo();
 //exit;
-
 
 require_once('classe/mrar.class.php');
 $Classe = new Mrar;
@@ -23,16 +22,40 @@ if(isset($_REQUEST['op']))
 	$op = $_REQUEST['op'];
 if(isset($_REQUEST['edtdelimiter']))
 	$delimiter = $_REQUEST['edtdelimiter'];
-else	
+else
 	$delimiter = '||';
 
 if(isset($delimiter))
 	$Classe->delimiter = $delimiter;
 
-// print '<pre>';
-// print_r($_REQUEST);
-// print '</pre>';
-// exit;
+  // if(isset($_REQUEST['edtexternalpredicates']))
+  // {
+  // 	 // $externalPredicates = $_REQUEST['edtexternalpredicates'];
+  //    // $externalPredicates =  explode($delimiter, $externalPredicates);
+  //    // print_r($externalPredicates);
+  //    // exit;
+  // }
+  // else
+  //  {
+      // print 'ESLE';
+      // Atribui o conteúdo do arquivo para variável $arquivo
+      $arquivo_link = file_get_contents('links_ex/links.json');
+      // Decodifica o formato JSON e retorna um Objeto
+      $json_link = json_decode($arquivo_link);
+      $externalPredicates_array = $json_link->Predicado;
+      $externalPredicates = implode($delimiter,$externalPredicates_array);
+      // print"<pre>";
+      // print_r($links_ex);
+      // print_r($externalPredicates);
+      // print"</pre>";
+  // }
+
+
+
+  // print '<pre>';
+  // print_r($_REQUEST);
+  // print '</pre>';
+  // //exit;
 
 // Iniciamos o "contador"
 list($usec, $sec) = explode(' ', microtime());
@@ -58,7 +81,7 @@ if(isset($_REQUEST['comp_dados']))
 if(isset($_REQUEST['comp_dados2']))
 	$dados2 = $_REQUEST['comp_dados2'];
 
-// print '$dados:'; 
+// print '$dados:';
 // if(!empty($dados))
 	//print_r ($dados);
 	//print_r ($dados2);
@@ -67,24 +90,24 @@ if(isset($_REQUEST['comp_dados2']))
 if(!empty($dados) && !empty($dados2))
 {
 	//print_r ($dados);
-	
+
 	$dados = $Classe->PegadadosJson(''.$_REQUEST['comp_dados'],'dados',$_REQUEST['best_support']);
 	$dados2 = $Classe->PegadadosJson(''.$_REQUEST['comp_dados2'],'dados',$_REQUEST['best_support']);
 
 	$htmlCompRules = $Classe->CompRules($dados,$dados2);
 	if(!empty($Classe->NewRules))
 		$htmlNewRulesTable = $Classe->MontaTabelaRules($Classe->NewRules);
- 		
+
 	// print '<pre>';
 	// print_r($dados2);
 	// print_r($dados);
 	// print '</pre>';
-	// exit(); 
+	// exit();
 }
 
 
 //------------------------------------------------------------------------------------------------------
-  
+
 $pasta = 'dados/';
 $arquivos = glob("$pasta{*.json}", GLOB_BRACE);
 
@@ -95,11 +118,12 @@ if(isset($radio))
 {
 	foreach($arquivos as $arq)
 	{
-	
+
 		if($radio == $arq)
 		{
 			//Caso o arquivo não seja lida, basta incluir o caminho completo até a pasta de dados.
-			$arquivo = $_SERVER['DOCUMENT_ROOT']."/".$arq;
+			// $arquivo = '$_SERVER['DOCUMENT_ROOT']'."/".$arq;
+			$arquivo = $arq;
 			$nomegrafo= $arq;
 			$Classe->nomegrafo = $arq;
 		}
@@ -107,6 +131,7 @@ if(isset($radio))
 }
 
 // echo '<pre> ';
+// print_r($arquivo);
 // print_r($_SERVER['DOCUMENT_ROOT']);
 // echo '</pre>';
   //------------------------------------------------------------------------------------------------------
@@ -151,10 +176,10 @@ if(isset($_REQUEST['edtMetricMinConf']))
 
 //define endpoint padrão
 if (empty($endpoint_ext))
-	$endpoint_ext = 'http://dbpedia.org/sparql';	
+	$endpoint_ext = 'http://dbpedia.org/sparql';
 
 
-if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel)) && empty($resp) && $op!='rules') 
+if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel)) && empty($resp) && $op!='rules')
 {
 
   //Passa valores para serem usados na classe quando necessário
@@ -174,7 +199,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
 
 
   // print '<pre>';
-  // print '$DS: ';  
+  // print '$DS: ';
   // print_r($DS);
   // print '</pre>';
   // exit;
@@ -201,7 +226,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     $EntityInfo = $Classe->MontaEntitiesRelations($DS);
 
     // print '<pre>';
-    // print '$EntityInfo: '; 
+    // print '$EntityInfo: ';
     // print_r($EntityInfo);
     // exit;
 
@@ -209,22 +234,22 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
 
     //-----------------------Algoritmo2
 
-    foreach ($EntityInfo as $endpoint => $dados) 
+    foreach ($EntityInfo as $endpoint => $dados)
     {
-		
+
      //  print '<pre>';
      //  print '<br>$endpoint: '.$endpoint.'<br>';
      //  print_r($dados);
      // exit;
-      foreach ($dados as $relations => $Entidade) 
+      foreach ($dados as $relations => $Entidade)
       {
         // print '<pre>';
         // print_r($Entidade);
         // print '</pre>';
         // exit;
-        $List_ItemChains = $Classe->GenerateItemChains($endpoint, $relations, $Entidade, $level=1,$endpoint);  
+        $List_ItemChains = $Classe->GenerateItemChains($endpoint, $relations, $Entidade, $level=1,$endpoint);
       }
-     
+
     }
      // print 'FIM';
      //  exit;
@@ -272,17 +297,17 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     $L++;
     $Candidates = null;
 
-    $total = count($LLICs); 
+    $total = count($LLICs);
     //echo 'Total: '.$total;
     //CRIA $Candidates
-    for ($i=1; $i < $total; $i++) {    
-        for ($j=($i+1); $j <= $total; $j++) { 
+    for ($i=1; $i < $total; $i++) {
+        for ($j=($i+1); $j <= $total; $j++) {
         $LIC1 = explode($delimiter, $LLICs[$i]['LOC']);
-        $LIC2 = explode($delimiter, $LLICs[$j]['LOC']);    
+        $LIC2 = explode($delimiter, $LLICs[$j]['LOC']);
         //Verifica se os elementos na posição L-1 (ex: 2ª posição do array com 2 elementos), de $LIC1[$L-1] == $LIC2[$L-1]
         //se as últimas posições dos arrays são iguais.
         if($LIC1[$L-1] == $LIC2[$L-1]){
-          $k++; 
+          $k++;
 
           // print 'L: '.$L;
           // print '<br>LIC1: ';
@@ -292,12 +317,12 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
           $values = array_unique(array_merge($LIC1,$LIC2));//une e elimina duplicidade.
           sort($values);// Ordena valores do Array
           $Candidates[$k] = $values;
-          
+
           // print_r($values);
           // print_r($Candidates);
           // exit;
         }
-      }  
+      }
     }
 
 
@@ -317,14 +342,14 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
       $List_1 = explode($delimiter, $List_ItemChains[$Chains1]['LOE']);
       $List_2 = explode($delimiter, $List_ItemChains[$Chains2]['LOE']);
       $List_3 = explode($delimiter, $List_ItemChains[$Chains3]['LOE']);
-     
+
       // print '<br><br>------------------------<br>';
       // print_r(array_intersect($List_1, $List_2, $List_3));
       // print '<br>------------------------<br><br><br>';
       // exit;
         $itens = implode($delimiter,array_intersect($List_1, $List_2, $List_3));
         $qtd_itens = count(array_intersect($List_1, $List_2, $List_3));
-        $support = $Classe->CalcularSuporte($qtd_itens);   
+        $support = $Classe->CalcularSuporte($qtd_itens);
         // print $support;
         // exit;
         if($support >= $Classe->minsup){
@@ -376,23 +401,25 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
   {
 	//if(empty($local_link))
 	//{
-        $Entitiesfinal = $Classe->Entities_DtExt;
+        $entitiesLocais = $Classe->Entities_DtLocal;
+        $entitiesFinais = $Classe->PegaDadosLinksExternos($entitiesLocais, $externalPredicates_array, $DS);
         // print '<pre>';
-        // print_r($Entitiesfinal);
+        // print_r($entitiesLocais);
+        // print_r($entitiesFinais);
         // print '</pre>';
-        // exit();        
-     	$TotalNewDS = $Classe->PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext);
+        // exit();
+     	$TotalNewDS = $Classe->PegaDadosExternos($entitiesFinais,$DS,$nomegrafo,$endpoint_ext);
 	//}
 	/*
 	else
 	{
     	//Trabalhar dados localmente.
         $i=0;
-        foreach ($Rules as $key => $value) 
+        foreach ($Rules as $key => $value)
         {
           // print_r($value);
           // exit();
-            $i++;    
+            $i++;
             if($i>1)
               $a = $delimiter;
             //pegar todos os elementos para buscar os links externos primeiro converte o string para array remove os itens duplicados
@@ -416,7 +443,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
       $return = $Classe->PegaDadoslocais($Entitiesfinal,$DS,$nomegrafo);
 
       // if($return)
-      // { 
+      // {
       //   header("Location: /index.php?salverules=ok_E");
       //   exit;
       // }
@@ -461,7 +488,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
         $pasta = 'Rules';
         //Salvar Rules em diretorio no formato Json
         // if($Salvar_Regras)
-        // {    
+        // {
           // $Classe->SalvarJson($FormatacaoRules,$radio,$pasta);
         // }
         //TESTE Salvar SESSION
@@ -527,10 +554,10 @@ elseif(isset($op) && $op=='rules')
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-    <!--DIV Carregando... --> 
+    <!--DIV Carregando... -->
   <script src="js/loading.js"></script>
 
-  <style> 
+  <style>
     /* Sortable tables */
     table.sortable thead {
         background-color:#eee;
@@ -680,9 +707,9 @@ elseif(isset($op) && $op=='rules')
       <h1>
         MRAR+ Dashboard
         <?php if(!empty($elapsed_time)){ ?>
-        <small>-<b> 
-        <?php 
-            echo 'Elapsed time: ', $elapsed_time, ' secs. Memory usage: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb'; 
+        <small>-<b>
+        <?php
+            echo 'Elapsed time: ', $elapsed_time, ' secs. Memory usage: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb';
         ?>
         </b>
 		</small>
@@ -693,24 +720,24 @@ elseif(isset($op) && $op=='rules')
     <div class="pad margin no-print">
       <div class="callout callout-warning" style="margin-bottom: 0!important;">
         <h4><i class="fa fa-warning"></i> Alerta: <?php echo $resp; ?></h4>
-        <?php 
-           if($resp == 'Erro5'){ 
+        <?php
+           if($resp == 'Erro5'){
             echo 'Selecione qual dos links externos você deseja buscar!';
-           }if($resp == 'erro6'){ 
+           }if($resp == 'erro6'){
             echo 'Verifique o preenchimento dos campos!';
-           }if($resp == 'erro7'){ 
+           }if($resp == 'erro7'){
             echo 'Verifique sua conexão com a internet e tente novamente!';
-           }if($resp == 'erro8'){ 
+           }if($resp == 'erro8'){
             echo 'Não foi possível ler dos dados! <b>'.$Classe->msg.'</b>';
-           }if($resp == 'erro1'){ 
+           }if($resp == 'erro1'){
             echo 'Não foi possível gerar a variável <b>$List_ItemChains</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           }if($resp == 'erro2'){ 
+           }if($resp == 'erro2'){
             echo 'Não foi possível gerar a variável <b>$LLICs</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           }if($resp == 'erro3'){ 
+           }if($resp == 'erro3'){
             echo 'Não foi possível gerar a variável <b>$AllLICs</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           } if($resp == 'erro4'){ 
+           } if($resp == 'erro4'){
             echo 'Não foi possível gerar a variável <b>$Rules</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           } 
+           }
         ?>
       </div>
     </div>
@@ -826,94 +853,103 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                     <label for="edtminsup">MinSup</label>
                     <input type="text" class="form-control" value="<?php echo $minsup; ?>" id="edtminsup" name="edtminsup" placeholder="minsup">
                   </div>
-                 
+
                   <div class="form-group">
                     <label for="edtminlevel">MinLevel</label>
                     <input type="text" class="form-control"  value="<?php echo $minlevel; ?>" id="edtminlevel" name="edtminlevel" placeholder="minlevel">
                   </div>
-                  
-                </div>  
-                <div class="col-md-6">  
+
+                </div>
+                <div class="col-md-6">
                   <div class="form-group">
                     <label for="edtminconf">MinConf</label>
                     <input type="text" class="form-control"  value="<?php echo $minconf; ?>" id="edtminconf" name="edtminconf" placeholder="minconf">
                   </div>
-                  
+
                   <div class="form-group">
                     <label for="edtmaxlevel">MaxLevel</label>
                     <input type="text" class="form-control"  value="<?php echo $maxlevel; ?>" id="edtmaxlevel" name="edtmaxlevel" placeholder="maxlevel">
                   </div>
                 </div>
-                <!-- <div class="col-md-12">  
+                <!-- <div class="col-md-12">
                   <div class="form-group">
                     <label for="edtminmetric">MinMetric</label>
                     <input type="text" class="form-control"  value="<?php //echo $minmetric; ?>" id="edtminmetric" name="edtminmetric" placeholder="minmetric">
                   </div>
-                  
+
                 </div> -->
-                
-               <div class="col-md-12">  
+
+               <div class="col-md-12">
                 <label for="edtmaxlevel">Select dataset:</label> <br>
                     <?php
                         $pasta = 'dados/';
                         // $arquivos = glob("{*.json,*.png,*.jpg,*.jpeg,*.gif}", GLOB_BRACE);
                         $arquivos = glob("$pasta{*.json}", GLOB_BRACE);
-				
+
                          $htmlRadio = " <div class='col-md-12S'>
                                         <select class='form-control' id='optionsRadios' name='optionsRadios'>
-                                          "; //<option>Select Dataset</option> 
+                                          "; //<option>Select Dataset</option>
 
                           foreach($arquivos as $arq)
                           {
                           	if(empty($_REQUEST['optionsRadios'])) $_REQUEST['optionsRadios'] = 'dados/Dt_Neymar.json';
-                            $rest = str_replace(array('.json', $pasta), '',$arq); 
+                            $rest = str_replace(array('.json', $pasta), '',$arq);
                             if($_REQUEST['optionsRadios'] == $arq) $checked = "selected"; else $checked = "";
                             	$htmlRadio .=" <option value='$arq' $checked>$rest</option> ";
                           }
                             $htmlRadio.="</select> </div>";
                           echo $htmlRadio;  ?>
                </div>
-               <div class="col-md-12">
-            	<div class="form-group">
-                  <label for="endpoint_ext">Ext. Endpoint</label>
-                  <input type="text" class="form-control"  value="<?php echo $endpoint_ext; ?>" id="endpoint_ext" name="endpoint_ext" placeholder="M. Conviction">
-                </div>
-              	</div>
+              <div class="col-md-12">
+                	<div class="form-group">
+                      <label for="endpoint_ext">External Endpoint</label>
+                      <input type="text" class="form-control"  value="<?php echo $endpoint_ext; ?>" id="endpoint_ext" name="endpoint_ext" placeholder="M. Conviction">
+                  </div>
+                    <label for="endpoint_ext">External Predicates: </label> (<?php echo $externalPredicates; ?>)
+              </div>
+
+
+               <!-- <div class="col-md-12">
+               <div class="form-group">
+               <label for="endpoint_ext">External Predicates: </label> (<?php// echo $externalPredicates; ?>)
+                     <input type="text" class="form-control"  value="<?php //echo $externalPredicates; ?>" id="edtexternalpredicates" name="edtexternalpredicates" >
+                  </div>
+              </div> -->
 
               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
                Configuration
               </a>
 
               <div id="collapseExample" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-				
                	<div class="row">
-               	<div class="col-md-12">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" name="Entities_Var" <?php if(isset($_REQUEST['Entities_Var']) && $_REQUEST['Entities_Var'] == 'on') echo 'checked'; ?> > Show Entities
-                      </label>
-                    </div>
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" name="Show_table" <?php if(isset($_REQUEST['Show_table']) && $_REQUEST['Show_table'] == 'on') echo 'checked'; ?> > Show only the table
-                      </label>
-                    </div> 
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" name="best_support" <?php if(isset($_REQUEST['best_support']) && $_REQUEST['best_support'] == 'on') echo 'checked'; ?> > Apply the best support 
-                      </label>
-                    </div>         
-				</div>				
-				</div>
-				
-				<div class="col-md-3">
-					<div class="form-group">
-					  <label for="edtdelimiter">Default delimiter</label>
-					  <input type="text" class="form-control" value="<?php echo $delimiter; ?>" id="edtdelimiter" name="edtdelimiter" maxlength="2" size="2" required>
-					</div>
-				</div>
+                 	<div class="col-md-12">
+                    <div class="col-md-6">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="Entities_Var" <?php if(isset($_REQUEST['Entities_Var']) && $_REQUEST['Entities_Var'] == 'on') echo 'checked'; ?> > Show Entities
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="Show_table" <?php if(isset($_REQUEST['Show_table']) && $_REQUEST['Show_table'] == 'on') echo 'checked'; ?> > Show only the table
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="best_support" <?php if(isset($_REQUEST['best_support']) && $_REQUEST['best_support'] == 'on') echo 'checked'; ?> > Apply the best support
+                        </label>
+                      </div>
+                      </div>
+                      <div class="col-md-4">
+              					<div class="form-group">
+              					  <label for="edtdelimiter">Def. delimiter</label>
+              					  <input type="text" class="form-control" value="<?php echo $delimiter; ?>" id="edtdelimiter" name="edtdelimiter" maxlength="2" size="2" required>
+              					</div>
+              				</div>
+          				</div>
+
+        				</div>
               </div>
-            </div>
 
               <!-- /.box-body -->
 
@@ -922,13 +958,14 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                 <button type="button" class="btn btn-warning" onclick="gerarComLinkExterno();ping();exibe('loading');" title="Minerar dados e gerar novo dataset com os links externos (DT A+)">MRAR+</button>
                 <button type="button" class="btn btn-success" onclick="salvarRegras();" title="Salvar Regras geradas em diretório de trabalho">Save Rules</button>
               </div>
+            </div>
             </form>
           </div>
           <!-- /.box -->
       </div>
 
 
-<?php if(isset($op) && $op == 'comp'){  ?>        
+<?php if(isset($op) && $op == 'comp'){  ?>
 <!-- ////////////////////////////////    Table  1  ////////////////////////////////////// -->
         <div class="col-xs-12" style="overflow:auto;height:460px; width:800px">
           <div class="box box-warning">
@@ -942,7 +979,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                <!-- collapse -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body">    
+            <div class="box-body">
                 <form role="form" action="index.php" method="post">
                 <input type="hidden" name="op" id="op" value="<?php echo $op;?>">
                     <?php
@@ -954,25 +991,25 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                          $htmlRules .=" <div class='col-md-6'>
                                           <label for='OriginalDataset'>Original Dataset</label>
                                         <select class='form-control' name='comp_dados'>
-                                          <option>Select the rules of the original dataset</option> "; 
+                                          <option>Select the rules of the original dataset</option> ";
 
                           $htmlRules2 .=" <div class='col-md-6'>
                                            <label for='ExtendedDataset'>Extended Dataset</label>
                                             <select class='form-control' name='comp_dados2'>
-                                            <option>Select extended dataset rules</option> "; 
+                                            <option>Select extended dataset rules</option> ";
                           foreach($arquivos as $arq)
                           {
                             // $rest = substr($arq, 0, -5); // remove ".json" do nome do arquivo --ultimos 5 caracteres
-                            $rest = str_replace(array('.json', $pasta), '',$arq); 
+                            $rest = str_replace(array('.json', $pasta), '',$arq);
                             // print '<br>'.$arq.' - '.$_REQUEST[comp_dados];
-                             
+
                              if($_REQUEST['comp_dados'] == $arq) $checked = "selected"; else $checked = "";
                              if($_REQUEST['comp_dados2'] == $arq) $checked2 = "selected";  else $checked2 = "";
 
-                             
+
                             $htmlRules .=" <option value='$arq' $checked>$rest</option> ";
                             $htmlRules2 .=" <option value='$arq' $checked2>$rest</option> ";
-                             
+
                           }
                             $htmlRules.="</select> </div>";
                             $htmlRules2.="</select> </div>";
@@ -980,19 +1017,19 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                           echo $htmlRules2;
 
                     ?>
-                <div class="col-md-12">                   
+                <div class="col-md-12">
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary" onclick="exibe('loading');">Compare</button>                  
+                    <button type="submit" class="btn btn-primary" onclick="exibe('loading');">Compare</button>
                     <!--<button type="submit" class="btn btn-danger" onclick="exibe('loading');">Delete</button>-->
                   </div>
                 </div>
-                </form> 
+                </form>
 
             </div>
             <!-- /.box-body -->
           </div>
 
-        <?php if(!empty($htmlCompRules)){  ?>        
+        <?php if(!empty($htmlCompRules)){  ?>
 	<!-- ////////////////////////////////    Table  1  ////////////////////////////////////// -->
          <div class="box box-warning">
             <div class="box-header  with-border">
@@ -1022,7 +1059,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 <?php }
 	  if(!empty($htmlNewRulesTable)){  ?>
 
-        
+
 <!-- ////////////////////////////////    Table  1  ////////////////////////////////////// -->
         <div class="col-md-12" style="overflow:auto;height:500px; width:1245px">
           <div class="box box-warning">
@@ -1049,7 +1086,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 
 <?php } if(!empty($htmlTable)){  ?>
 
-        
+
 <!-- ////////////////////////////////    Table  1  ////////////////////////////////////// -->
         <div class="col-xs-12" style="overflow:auto;height:420px; width:820px">
           <div class="box box-warning">
@@ -1074,7 +1111,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
           <!-- /.box -->
       </div>
 
-<?php } 
+<?php }
 		if(!empty($htmlTableRules)){  ?>
       <div class="col-md-12" style="overflow:auto;height:500px; width:1245px">
           <div class="box box-warning"">
@@ -1085,14 +1122,14 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
               </div>
-              
+
               <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body">              
+            <div class="box-body">
                 <?php
                     echo $htmlTableRules;
-                ?>              
+                ?>
            </div>
             <!-- /.box-body -->
           </div>
@@ -1105,41 +1142,41 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 
 
 <!-- loading-  Carregando... -->
-      <div id="loading" style="display: none;  
-          background: #FFFFFF;  
-          position: absolute;  
-          width: 400px;  
-          top: 25%;  
-          left: 50%;  
-          margin-left: -200px;  
-          margin-top: -100px;  
-          border-style: solid;  
-          border-color: black;  
-          border-width: 1px;  
-          text-align: center;  
-          text-transform: uppercase;  
-          font-family: arial;  
-          font-weight: bold;  
-          color: silver;  
-          z-index: 3;">  
-        <br>  
-        <br>  
-        <br><img alt="Loading..." src="imagens/rodas.gif" width="180" height="150">  
-        <br>Loading...  
-                  
-        <br> 
+      <div id="loading" style="display: none;
+          background: #FFFFFF;
+          position: absolute;
+          width: 400px;
+          top: 25%;
+          left: 50%;
+          margin-left: -200px;
+          margin-top: -100px;
+          border-style: solid;
+          border-color: black;
+          border-width: 1px;
+          text-align: center;
+          text-transform: uppercase;
+          font-family: arial;
+          font-weight: bold;
+          color: silver;
+          z-index: 3;">
+        <br>
+        <br>
+        <br><img alt="Loading..." src="imagens/rodas.gif" width="180" height="150">
+        <br>Loading...
+
+        <br>
       </div>
 
-      
-
-</div> 
 
 
+</div>
 
 
 
 
-   
+
+
+
   </div>
   <!-- /.row (main row) -->
 
@@ -1357,11 +1394,11 @@ if(!empty($_REQUEST['edtMetricConviction'])){
   {
      r = true;
      m = '';
-    if ((document.getElementById('edtminsup').value == '') 
+    if ((document.getElementById('edtminsup').value == '')
     	|| (document.getElementById('edtminconf').value == '')
     	|| (document.getElementById('edtminlevel').value == '')
     	|| (document.getElementById('edtmaxlevel').value == '')  )
-    { 
+    {
         r = false;
       m = 'Verifique o preenchimento dos campos. \r\n';
     }
@@ -1376,40 +1413,40 @@ if(!empty($_REQUEST['edtMetricConviction'])){
   }
 
   function gerarComLinkExterno()
-  { 
+  {
   	if(validaForm()==true)
   	{
         document.getElementById('frm').action='index.php?salvar_externos=on';
-        document.getElementById('frm').submit(); 
+        document.getElementById('frm').submit();
 	}
 	else
 	{
 		window.location="/index.php?resp=erro6";
 	}
   }
-  
+
   function gerarregras()
   {
     if(validaForm()==true)
   	{
         document.getElementById('frm').action='index.php';
-        document.getElementById('frm').submit(); 
+        document.getElementById('frm').submit();
 	}
 	else
 	{
 		window.location="/index.php?resp=erro6";
 	}
-	 
+
   }
   function salvarRegras()
   {
         document.getElementById('frm').action='index.php?op=rules';
-        document.getElementById('frm').submit(); 
-	 
+        document.getElementById('frm').submit();
+
   }
 
   function ping(){
-		<?php 
+		<?php
 			if(!$sock = fsockopen('www.google.com.br',80,$num,$error,5))
 	   			$msg = "Você está sem conexão a internet, verifique a sua conexão e tente novamente!";
 		?>
@@ -1426,7 +1463,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- jQuery UI 1.11.4 
+<!-- jQuery UI 1.11.4
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>-->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
@@ -1445,7 +1482,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/knob/jquery.knob.js"></script>
-<!-- daterangepicker 
+<!-- daterangepicker
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 -->
 <script src="plugins/daterangepicker/daterangepicker.js"></script>

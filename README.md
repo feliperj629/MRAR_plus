@@ -50,9 +50,15 @@ Se tudo estiver ok basta o acessar o link do localhost (http://localhost:8000).
 
 #No Linux
 
-Basta instalar o apache 2 e o PHP7:
+Passos:
 
-Exemplo de tutorial online "https://www.digitalocean.com/community/tutorials/como-instalar-a-pilha-linux-apache-mysql-php-lamp-no-ubuntu-18-04-pt".
+1- Instalar os programas apache 2 e PHP7:
+
+Exemplo de tutorial online para o UBUNTU 18 "https://www.digitalocean.com/community/tutorials/como-instalar-a-pilha-linux-apache-mysql-php-lamp-no-ubuntu-18-04-pt".
+
+2- Baixar o projeto dentro da pasta raiz do servidor web Ex. "/var/www/".
+
+3- Se o servidor web local já estiver rodando, basta abrir o navegador com o endereço "http://localhost:[PORTA]/[Pasta do Projeto]/index.php" ex: http://localhost:8000/MRAR_plus/index.php 
 
 
 #Recomendações:

@@ -45,7 +45,7 @@ class Mrar
     var $nomegrafo;
 
     var $NewRules;
-    var $msg;
+    var $json_msg;
 
 function CompRules($array1,$array2)
 {
@@ -706,25 +706,25 @@ function PegadadosJson($arquivo,$key,$bestsup){
 		switch (json_last_error())
 		{
 			case JSON_ERROR_NONE:
-				$this->msg = 'Validação Json: Sem erros.';
+				$this->json_msg = 'Validação Json: Sem erros.';
 			break;
 			case JSON_ERROR_DEPTH:
-				$this->msg = 'Validação Json: Profundidade máxima da pilha excedida.';
+				$this->json_msg = 'Validação Json: Profundidade máxima da pilha excedida.';
 			break;
 			case JSON_ERROR_STATE_MISMATCH:
-				$this->msg = 'Validação Json: Sub-fluxo ou a incompatibilidade de modos.';
+				$this->json_msg = 'Validação Json: Sub-fluxo ou a incompatibilidade de modos.';
 			break;
 			case JSON_ERROR_CTRL_CHAR:
-				$this->msg = 'Validação Json: Carácter de controle inesperado encontrado.';
+				$this->json_msg = 'Validação Json: Carácter de controle inesperado encontrado.';
 			break;
 			case JSON_ERROR_SYNTAX:
-				$this->msg = 'Validação Json: Erro de sintaxe, JSON malformado.';
+				$this->json_msg = 'Validação Json: Erro de sintaxe, JSON malformado.';
 			break;
 			case JSON_ERROR_UTF8:
-				$this->msg = 'Validação Json: Caracteres UTF-8 malformados, possivelmente codificados incorretamente.';
+				$this->json_msg = 'Validação Json: Caracteres UTF-8 malformados, possivelmente codificados incorretamente.';
 			break;
 			default:
-				$this->msg = 'Validação Json:  Erro desconhecido.';
+				$this->json_msg = 'Validação Json:  Erro desconhecido.';
 			break;
 		}
 

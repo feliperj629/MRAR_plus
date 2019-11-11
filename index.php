@@ -408,7 +408,15 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
         // print_r($entitiesFinais);
         // print '</pre>';
         // exit();
-     	$TotalNewDS = $Classe->PegaDadosExternos($entitiesFinais,$DS,$nomegrafo,$endpoint_ext);
+        if(!empty($entitiesFinais))
+        {
+            $TotalNewDS = $Classe->PegaDadosExternos($entitiesFinais,$DS,$nomegrafo,$endpoint_ext);
+        }
+        else
+        {
+            header("Location: /index.php?resp=erro9&edtminsup=$minsup&edtminconf=$minconf&edtmaxlevel=$maxlevel&edtminlevel=$minlevel&optionsRadios=$radio");
+            exit;
+        }
 	//}
 	/*
 	else
@@ -430,7 +438,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
             }elseif(empty($Externo_EndPoints) && !empty($Externo_Entidades)){
               $EntitiesExternos .= $a.$value['LOE_var'];
             }else{
-              header("Location: /index.php?resp=Erro5&edtminsup=$minsup&edtminconf=$minconf&edtmaxlevel=$maxlevel&edtminlevel=$minlevel&optionsRadios=$radio");
+              header("Location: /index.php?resp=erro5&edtminsup=$minsup&edtminconf=$minconf&edtmaxlevel=$maxlevel&edtminlevel=$minlevel&optionsRadios=$radio");
               exit;
             }
 
@@ -721,23 +729,25 @@ elseif(isset($op) && $op=='rules')
       <div class="callout callout-warning" style="margin-bottom: 0!important;">
         <h4><i class="fa fa-warning"></i> Alerta: <?php echo $resp; ?></h4>
         <?php
-           if($resp == 'Erro5'){
-            echo 'Selecione qual dos links externos você deseja buscar!';
-           }if($resp == 'erro6'){
-            echo 'Verifique o preenchimento dos campos!';
-           }if($resp == 'erro7'){
-            echo 'Verifique sua conexão com a internet e tente novamente!';
-           }if($resp == 'erro8'){
-            echo 'Não foi possível ler dos dados! <b>'.$Classe->msg.'</b>';
-           }if($resp == 'erro1'){
-            echo 'Não foi possível gerar a variável <b>$List_ItemChains</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           }if($resp == 'erro2'){
-            echo 'Não foi possível gerar a variável <b>$LLICs</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           }if($resp == 'erro3'){
-            echo 'Não foi possível gerar a variável <b>$AllLICs</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           } if($resp == 'erro4'){
-            echo 'Não foi possível gerar a variável <b>$Rules</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
-           }
+            if($resp == 'erro1'){
+              echo 'Não foi possível gerar a variável <b>$List_ItemChains</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
+            }if($resp == 'erro2'){
+              echo 'Não foi possível gerar a variável <b>$LLICs</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
+            }if($resp == 'erro3'){
+              echo 'Não foi possível gerar a variável <b>$AllLICs</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
+            }if($resp == 'erro4'){
+              echo 'Não foi possível gerar a variável <b>$Rules</b>. Altere os valores de suporte e confiança para executar o algoritmo!';
+            }if($resp == 'erro5'){
+              echo 'Selecione qual dos links externos você deseja buscar!';
+            }if($resp == 'erro6'){
+              echo 'Verifique o preenchimento dos campos!';
+            }if($resp == 'erro7'){
+              echo 'Verifique sua conexão com a internet e tente novamente!';
+            }if($resp == 'erro8'){
+              echo 'Não foi possível ler dos dados! <b>'.$Classe->json_msg.'</b>';
+            }if($resp == 'erro9'){
+              echo 'Não foi possível encontrar os links externos dos recursos! Verifique se os recusos possuem alguma relação com algum dos "External Predicates" para as relações presentes no arquivo "links_ex/links.json". </b>';
+            }
         ?>
       </div>
     </div>

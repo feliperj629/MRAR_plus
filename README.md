@@ -27,8 +27,10 @@ Processador - Intel I7 com 8gb de memória.
 Passos:
 
 1- Faça o download do PHP para configura-lo no Windows
+
 2- Use o servidor embutido do PHP.
-3- Clone este repositório e o instale na pasta raiz do sismtema, ex. "C:\MRAR_plus". 
+
+3- Clone este repositório e o instale na pasta raiz do sistema, ex. "C:\MRAR_plus". 
 
 Obs. Em caso de dúvidas sobre como executar o php no Windows e usar o servidor web embutido, basta consultar um tutórial online. Ex.(https://blog.schoolofnet.com/como-instalar-o-php-no-windows-do-jeito-certo-e-usar-o-servidor-embutido/).
 

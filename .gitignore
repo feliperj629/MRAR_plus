@@ -2,5 +2,10 @@
 dados/HU_R2007.json
 links_ex/links_ex.txt
 links_ex/links_ex2.txt
-rules/20191016031933_JabotG_IBGE_full.json
+rules/*
 dados/20191110141143_Dt_Neymar_sameAs.json
+dados/20191118174256_Dt_Mockaroo.json
+dados/maca_2.json
+dados/maca.json
+dados/Dt_JabotG.json
+dados/20191118180413_Dt_Neymar.json

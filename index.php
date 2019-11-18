@@ -140,7 +140,7 @@ if(!empty($arquivo))
 
 // print 'aqui';
 // print_r($DS);
-//exit;
+// exit;
 
 $minsup = '';
 // $minconf = 0.7;
@@ -222,6 +222,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // print_r($EndpointEntity);
     // exit;
 
+	//print 'aqui:1';
     //Monta Lista de Endidades e Relações, passando os EndPoints e o Grafo direcionado
     $EntityInfo = $Classe->MontaEntitiesRelations($DS);
 
@@ -231,7 +232,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // exit;
 
 
-
+	//print 'aqui2:';
     //-----------------------Algoritmo2
 
     foreach ($EntityInfo as $endpoint => $dados)
@@ -251,6 +252,19 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
       }
 
     }
+
+    // print '<pre>';
+    // print 'Entities_Var_Caminho:<br> ';
+    // print_r($Classe->Entities_Var_Caminho);
+    // exit;
+	// print '<pre>';
+    // print '<br>$List_ItemChains: ';
+    // print 'Total: '.(count($List_ItemChains));
+    // print_r($List_ItemChains);
+    // print '</pre>';
+    // exit;
+
+
      // print 'FIM';
      //  exit;
     if(empty($List_ItemChains) && !empty($arquivo))
@@ -261,12 +275,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
       exit;
     }
 
-    // print '<pre>';
-    // print '<br>$List_ItemChains: ';
-    // print_r($List_ItemChains);
-    // print '</pre>';
-    // exit;
-
+    
 
 
     //-----------------------Algoritmo3
@@ -287,7 +296,8 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
 
     $L = 1;
 
-    do { //desnecessário pois o algoritmo só da uma passada e nao tem nada para decrementar $Candidates de seu valor atual até 0 // while (count($Candidates) == 0)
+	//Removido em 18/11/2019
+    //do { //desnecessário pois o algoritmo só da uma passada e nao tem nada para decrementar $Candidates de seu valor atual até 0 // while (count($Candidates) == 0)
 
     // print '--------------------------------------------------------------------------<br>';
     // print "----------------------- ".count($Candidates)." ---------------------------------------<br>";
@@ -328,14 +338,16 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
 
     $LLICs = null;
 
-    foreach ($Candidates as $key => $CIS) {
-        if(count($CIS)>3){
-          print 'Verificar possível erro no número de variáveis. Pois se tiver mais de 3 colunas dará erro no proximo comando (split). A principio não deve ter 3 colunas';
-          print '<pre>';
-          print_r($CIS);
-          print '</pre>';
-          exit;
-        }
+    foreach ($Candidates as $key => $CIS) 
+	{
+		//Removido em 18/11/2019
+        // if(count($CIS)>3){
+          // print 'Verificar possível erro no número de variáveis. Pois se tiver mais de 3 colunas dará erro no próximo comando (split). A principio não deve ter 3 colunas';
+          // print '<pre>';
+          // print_r($CIS);
+          // print '</pre>';
+          // exit;
+        // }
       list ($Chains1,$Chains2,$Chains3) = $CIS;
 
       //print $Chains1.' - '.$Chains2.' - '.$Chains3;
@@ -370,10 +382,11 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // print '$AllLICs';
     // print_r($AllLICs);
     // exit;
-
-
-
-    } while (count($Candidates) == 0);//desnecessário pois o algoritmo só da uma passada e nao tem nada para decrementar $Candidates de seu valor atual até 0
+	
+	//$teste++;
+	//print $teste.' - ';
+	//Removida em 18/11/2019
+  // } while (count($Candidates) == 0);//desnecessário pois o algoritmo só da uma passada e nao tem nada para decrementar $Candidates de seu valor atual até 0
 
 
 
@@ -401,13 +414,33 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
   {
 	//if(empty($local_link))
 	//{
-        $entitiesLocais = $Classe->Entities_DtLocal;
-        $entitiesFinais = $Classe->PegaDadosLinksExternos($entitiesLocais, $externalPredicates_array, $DS);
+        ////Apenas os recrusos que dão suporte as regras. (entidade de onde se iniciam os caminhos)
+        //$entitiesLocais = $Classe->Entities_DtLocal;
+		
+		if($_REQUEST['GetExternalResources']=='on')
+		{
+			////Pegar entidades com links externos (sameAs e etc... Com base no arquivo "links_ex/links.json")
+			$entitiesFinais = $Classe->PegaLinksExternos($Classe->Entities_DtLocal, $externalPredicates_array, $DS);
+		}
+		else
+		{
+			$entitiesFinais = $Classe->Entities_DtLocal;
+		}	
+		
+		// // Uma das tarefas listadas como trabalho futuro. (Em desenvolvimento) - Precisa de mais testes.
+        ////Todos os recursos ao longo do caminho do grafo  (Todas as entidades ao longo de cada caminhos)
+        // $Entities_Var_Caminho = array_filter(array_unique(explode($delimiter, $Classe->Entities_Var_Caminho)));
+        ////Pegar entidades com links externos (sameAs e etc... Com base no arquivo "links_ex/links.json")
+        // $entitiesFinais_caminhos = $Classe->PegaLinksExternos($Entities_Var_Caminho, $externalPredicates_array, $DS);
+
         // print '<pre>';
         // print_r($entitiesLocais);
+        // print_r($Entities_Var_Caminho);
         // print_r($entitiesFinais);
+        // print_r($entitiesFinais_caminhos);
         // print '</pre>';
         // exit();
+
         if(!empty($entitiesFinais))
         {
             $TotalNewDS = $Classe->PegaDadosExternos($entitiesFinais,$DS,$nomegrafo,$endpoint_ext);
@@ -473,7 +506,6 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // echo 'Elapsed time: ', $elapsed_time, ' secs. Memory usage: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb';
 
 
-
     // print '<pre>';
 
     // // print '<br><br><br>$AllLICs: ';
@@ -536,7 +568,7 @@ elseif(isset($op) && $op=='rules')
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Algoritmo MRAR</title>
+  <title>Algorithm MRAR_plus</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -917,7 +949,13 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                   </div>
                     <label for="endpoint_ext">External Predicates: </label> (<?php echo $externalPredicates; ?>)
               </div>
-
+				<div class="col-md-12">
+					<div class="checkbox">
+						<label>
+                          <input type="checkbox" name="GetExternalResources" <?php if(isset($_REQUEST['GetExternalResources']) && $_REQUEST['GetExternalResources'] == 'on') echo 'checked'; ?> > Get External Resources
+                        </label>
+                    </div>
+                </div>
 
                <!-- <div class="col-md-12">
                <div class="form-group">

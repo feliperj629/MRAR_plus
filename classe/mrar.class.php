@@ -8,7 +8,7 @@ class Mrar
     // var $List; // Lista em tripla
     var $Entities_V;
     var $EntityInfo;
-    var $TesteArray;
+    var $entityArray;
 
 
     //valores passados pelo Usuário
@@ -41,6 +41,7 @@ class Mrar
     var $Conviction_max;
 
     var $Entities_DtLocal;
+    var $Entities_Var_Caminho;
     var $Entities_DtExt;
     var $nomegrafo;
 
@@ -255,8 +256,8 @@ function UnionIncomingEdgesOf($Entities_Var)
   // print_r($Entities_Var);
   // print_r($EntityInfo);
   // print '</pre>';
-  // exit;
-  $this->TesteArray = array();
+//  exit;
+  $this->entityArray = array();
   foreach ($Entities_Var as $key => $entiti)
   {
     // print '<br>'.$key;
@@ -264,39 +265,39 @@ function UnionIncomingEdgesOf($Entities_Var)
     // print_r($EntityInfo[$entiti]);
     // exit;
 
-    if(empty($this->TesteArray))
+    if(empty($this->entityArray))
     {
-      $this->TesteArray = $EntityInfo[$entiti];
+      $this->entityArray = $EntityInfo[$entiti];
     }
     else
     {
-      if (array_key_exists(key($this->TesteArray), $EntityInfo[$entiti]))
+      if (array_key_exists(key($this->entityArray), $EntityInfo[$entiti]))
       {
-        foreach ($EntityInfo[$entiti][key($this->TesteArray)] as $key2 => $value) {
-            $this->TesteArray[key($this->TesteArray)][$key2] = $value;
+        foreach ($EntityInfo[$entiti][key($this->entityArray)] as $key2 => $value) {
+            $this->entityArray[key($this->entityArray)][$key2] = $value;
         }
       }
     }
       // print '<pre>';
       // print '<br> ------------------------------------------------------------------------------------------<br>';
       // print_r($EntityInfo[$entiti]);
-      // print_r($this->TesteArray);
-      // // print_r(key($this->TesteArray));
+      // print_r($this->entityArray);
+      // // print_r(key($this->entityArray));
       // print '<br> ------------------------------------------------------------------------------------------<br>';
       // print '</pre><br><br>';
       // exit;
   }
 
   // exit;
-    $Relations = key($this->TesteArray);
-    $this->Entities_V = $this->TesteArray[$Relations];
+    $Relations = key($this->entityArray);
+    $this->Entities_V = $this->entityArray[$Relations];
     $Relations_Var[0] =  $Relations;
     // print $teste;
 
       // print '<pre>';
       // print '<br> -----------------------------------------------------------------------------------<br>';
       // print'<br>Relations: '.$Relations.'<br><br>';
-      // print_r($this->TesteArray);
+      // print_r($this->entityArray);
       //   print '</pre>';
       // exit;
 
@@ -343,7 +344,7 @@ function GenerateItemChains($EndpointEntity, $Relations_Parameter, $Entities_Par
 
     if($level >= $this->minlevel && $level <= $this->maxlevel)
     {
-       // print '-------------------------------'.$level.'--------------------------------------<br>';
+      //  print '-------------------------------'.$level.'--------------------------------------<br>';
 
 
       $Entities_Var =  array_unique($Entities_Parameter);   //remover duplicidade
@@ -362,13 +363,26 @@ function GenerateItemChains($EndpointEntity, $Relations_Parameter, $Entities_Par
         if($support > $this->minsup)
         {
           // print '<pre>';
-          // print_r($Entities_Var);
+          // print 'aqui<br>';
+          //print_r($Entities_Var);
           // print 'support: '.$support;
           // print '</pre>';
-          // exit;
+        //  exit;
 
           $entidades = implode($this->delimiter, $Entities_Var);//Junta array separando por vírgula
-
+          //TEste felipe (2019/11/11)
+          // if(strpos($entidades, 'Brasil'))
+          // {
+          //   print '<pre>';
+          //   print 'aqui<br>';
+          //   print $entidades;
+          //   print '</pre>';
+          //   exit;
+          // }
+          // //Guardar recursos no caminho da regra.
+          if (!empty($entidades)) {
+              $this->Entities_Var_Caminho .= $entidades.$this->delimiter.$EndpointEntity.$this->delimiter;
+          }
           //Criando novo ItemChain
           // $ChainID = $this->ChainID;
 
@@ -396,20 +410,27 @@ function GenerateItemChains($EndpointEntity, $Relations_Parameter, $Entities_Par
         // print 'Relations_Var:<br> ';
         // print_r($Relations_Var);
 
-        // print '<pre>';
-        // print 'Entities_Var:<br> ';
-        // print_r($Entities_Var);
-        // exit;
+       //  print '<pre>';
+       //  print 'aqui<br>';
+       //  print 'Entities_Var_Caminho:<br> ';
+       //  print_r($this->Entities_Var_Caminho);
+       //
+       //  print 'Entities_Var:<br> ';
+       //  print_r($Entities_Var);
+       // exit;
         //$Entities_Var_endpoint = $endpoint_Comp.$this->delimiter.implode($this->delimiter, $Entities_Var);
 
         foreach ($Relations_Var as $key => $relacao) {
            $this->GenerateItemChains($EndpointEntity, $Relations_Parameter.$this->delimiter.$relacao, $this->Entities_V, $level+1,$Entities_Var_endpoint);
         }
     }
-   // Mostrar List_ItemChains
+   //  // Mostrar List_ItemChains
     // print '<pre>';
     // print 'List_ItemChains:<br> ';
     // print_r($this->List_ItemChains);
+    // print '<pre>';
+    // print 'Entities_Var_Caminho:<br> ';
+    // print_r($this->Entities_Var_Caminho);
     // exit;
 
     return $this->List_ItemChains;
@@ -756,10 +777,12 @@ function PegadadosJson($arquivo,$key,$bestsup){
 function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
 {
   // print  '<pre>';
-  // print_r($Entitiesfinal);
-  // print_r($DS);
+  // print 'PegaDadosExternos';
+    // print_r($Entitiesfinal);
+    // print_r($nomegrafo);
+    // print_r($DS);
+    // print($endpoint_ext);
   // print  '</pre>';
-  // print($endpoint_ext);
   // exit;
 
    // Setup some additional prefixes for DBpedia
@@ -773,6 +796,8 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
 
   foreach ($Entitiesfinal as $key => $entities)
   {
+	$entities = $this->TratarDados($entities);
+	
     $result  = $sparql->query(
         'SELECT distinct ?p ?o
             WHERE
@@ -782,7 +807,7 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
         ');
     // print"<pre>";
     // print_r($result);
-    // exit;
+    //exit;
       foreach ($result as $key2 => $row)
       {
         if($row->p <> 'http://dbpedia.org/ontology/wikiPageWikiLink') //Toda consulta retorna com a página de origem, por isso estou removendo este item
@@ -820,27 +845,42 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
   return  '<b>'.$this->totalNewDt.'</b> nodes and <b>'.count($NewDT).'</b> edges!';
 }
 
-function PegaDadosLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os links externos dos recursos associados as regras.
+function TratarDados($string)
 {
+	//tratamento para evitar erros.
+	$caracteres = array("(", ")", ",");
+	$correcao   = array("\(", "\)", "\,");
 
+	$novastring = str_replace($caracteres, $correcao, $string);
+	
+	return $novastring;
+}
+
+function PegaLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os links externos dos recursos associados as regras.
+{
+  //print 'aqui';
       foreach ($externalPredicates as $predicate) //Para cada predicados definido como externo (arquivo: links_ex.json)
       {
           foreach ($DS as $key => $entiti)  //para todos os dados do grafo original
           {
               if($predicate == $entiti['Predicado']) // quando o predicado for igual a um dos predicados definidos como externos. ex. sameAs
               {
-                  if (in_array($entiti['Subject'], $entitiesLocais))
-                  {
-                      $EntitiesExt[] = $entiti['Object'];
+                //print $predicate.' - '.$entiti['Predicado'];
+              //  exit;
+                  if (in_array($entiti['Subject'], $entitiesLocais)){
+                    $EntitiesExt[] = $entiti['Object'];
                   }
+                  //else {
+                    // print $entiti['Subject'].'- nao encontrada <br>';
+                  //}
               }
           }
       }
       // print"<pre>";
       // print_r($entitiesLocais);
-      // print_r($externalPredicates);
-      // print_r($EntitiesExt);
-      // print_r($DS);
+      // //print_r($externalPredicates);
+      // //print_r($EntitiesExt);
+      // // print_r($DS);
       // print"</pre>";
       // exit;
 

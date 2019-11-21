@@ -55,7 +55,7 @@ if(isset($delimiter))
   // print '<pre>';
   // print_r($_REQUEST);
   // print '</pre>';
-  // //exit;
+  //exit;
 
 // Iniciamos o "contador"
 list($usec, $sec) = explode(' ', microtime());
@@ -417,7 +417,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
         ////Apenas os recrusos que dão suporte as regras. (entidade de onde se iniciam os caminhos)
         //$entitiesLocais = $Classe->Entities_DtLocal;
 		
-		if($_REQUEST['GetExternalResources']=='on')
+		if(!isset($_REQUEST['GetExternalResources']))
 		{
 			////Pegar entidades com links externos (sameAs e etc... Com base no arquivo "links_ex/links.json")
 			$entitiesFinais = $Classe->PegaLinksExternos($Classe->Entities_DtLocal, $externalPredicates_array, $DS);
@@ -779,6 +779,8 @@ elseif(isset($op) && $op=='rules')
               echo 'Não foi possível ler dos dados! <b>'.$Classe->json_msg.'</b>';
             }if($resp == 'erro9'){
               echo 'Não foi possível encontrar os links externos dos recursos! Verifique se os recusos possuem alguma relação com algum dos "External Predicates" para as relações presentes no arquivo "links_ex/links.json". </b>';
+            }if($resp == 'erro10'){
+              echo 'Não foi possível executar o comando do SPAQL Query. Verifique a função <b>PegaDadosExternos</b>. </b>';
             }
         ?>
       </div>
@@ -949,13 +951,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                   </div>
                     <label for="endpoint_ext">External Predicates: </label> (<?php echo $externalPredicates; ?>)
               </div>
-				<div class="col-md-12">
-					<div class="checkbox">
-						<label>
-                          <input type="checkbox" name="GetExternalResources" <?php if(isset($_REQUEST['GetExternalResources']) && $_REQUEST['GetExternalResources'] == 'on') echo 'checked'; ?> > Get External Resources
-                        </label>
-                    </div>
-                </div>
+				
 
                <!-- <div class="col-md-12">
                <div class="form-group">
@@ -987,7 +983,13 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                           <input type="checkbox" name="best_support" <?php if(isset($_REQUEST['best_support']) && $_REQUEST['best_support'] == 'on') echo 'checked'; ?> > Apply the best support
                         </label>
                       </div>
-                      </div>
+						<div class="checkbox">
+							<label>
+							  <input type="checkbox" name="GetExternalResources" <?php if(isset($_REQUEST['GetExternalResources']) && $_REQUEST['GetExternalResources'] == 'on') echo 'checked'; ?> > Get external resources for local data
+							</label>
+						</div>
+					
+					</div>
                       <div class="col-md-4">
               					<div class="form-group">
               					  <label for="edtdelimiter">Def. delimiter</label>

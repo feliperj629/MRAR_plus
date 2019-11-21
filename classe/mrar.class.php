@@ -822,7 +822,11 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
             // print '<br>O-> '.$row->o;
             // exit;
 
-          $DS_Ext[$this->i]['Subject'] = $entities;
+          //Aqui os dados externos são associados aos recusos externos do sameAs.
+          //$DS_Ext[$this->i]['Subject'] = $entities;
+		  //Atualizado em 21/11/2019 para mater o entendimento que os dados vindos do dataset externo precisam ser associados direto aos recursos locais.		  
+          //Aqui os dados externos são associados aos recusos locais.
+          $DS_Ext[$this->i]['Subject'] = $key; //key é a chave do array que está com o recurso local.
           $DS_Ext[$this->i]['Predicado'] =  (string) $row->p;
           $DS_Ext[$this->i]['Object'] = (string) $row->o;
         }
@@ -830,19 +834,21 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
 
   }
 
-  $NewDT = array_merge($DS, $DS_Ext);
+	$NewDT = array_merge($DS, $DS_Ext);
 
     // print "<pre>";
     // print_r($NewDT);
     // print "</pre>";
     // exit;
-    $this->totalNewDt = $this->CalcularTamanhoGrafo(NULL,$NewDT);
+	
+	$this->totalNewDt = $this->CalcularTamanhoGrafo(NULL,$NewDT);
 
   $this->SalvarJson($NewDT,$nomegrafo,'dados',null);
 
     //print $totalNewDt;
     //exit;
-  return  '<b>'.$this->totalNewDt.'</b> nodes and <b>'.count($NewDT).'</b> edges!';
+	
+	return  '<b>'.$this->totalNewDt.'</b> nodes and <b>'.count($NewDT).'</b> edges!';
 }
 
 function TratarDados($string)
@@ -858,7 +864,6 @@ function TratarDados($string)
 
 function PegaLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os links externos dos recursos associados as regras.
 {
-  //print 'aqui';
       foreach ($externalPredicates as $predicate) //Para cada predicados definido como externo (arquivo: links_ex.json)
       {
           foreach ($DS as $key => $entiti)  //para todos os dados do grafo original
@@ -868,7 +873,7 @@ function PegaLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os
                 //print $predicate.' - '.$entiti['Predicado'];
               //  exit;
                   if (in_array($entiti['Subject'], $entitiesLocais)){
-                    $EntitiesExt[] = $entiti['Object'];
+                    $EntitiesExt[$entiti['Subject']] = $entiti['Object'];
                   }
                   //else {
                     // print $entiti['Subject'].'- nao encontrada <br>';
@@ -877,10 +882,12 @@ function PegaLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os
           }
       }
       // print"<pre>";
+	  // print '$entitiesLocais:';
       // print_r($entitiesLocais);
-      // //print_r($externalPredicates);
-      // //print_r($EntitiesExt);
-      // // print_r($DS);
+      //  print_r($externalPredicates);
+      // print '$EntitiesExt:';
+      // print_r($EntitiesExt);
+      // print_r($DS);
       // print"</pre>";
       // exit;
 

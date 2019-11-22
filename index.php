@@ -778,7 +778,7 @@ elseif(isset($op) && $op=='rules')
             }if($resp == 'erro8'){
               echo 'Não foi possível ler dos dados! <b>'.$Classe->json_msg.'</b>';
             }if($resp == 'erro9'){
-              echo 'Não foi possível encontrar os links externos dos recursos! Verifique se os recusos possuem alguma relação com algum dos "External Predicates" para as relações presentes no arquivo "links_ex/links.json". </b>';
+              echo 'Não foi possível encontrar os links externos dos recursos! Verifique se os recusos possuem alguma relação com algum dos "Predicantes to external resources" para as relações presentes no arquivo "links_ex/links.json". </b>';
             }if($resp == 'erro10'){
               echo 'Não foi possível executar o comando do SPAQL Query. Verifique a função <b>PegaDadosExternos</b>. </b>';
             }
@@ -946,16 +946,17 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                </div>
               <div class="col-md-12">
                 	<div class="form-group">
-                      <label for="endpoint_ext">External Endpoint</label>
+                      <label for="endpoint_ext">External endpoint</label>
                       <input type="text" class="form-control"  value="<?php echo $endpoint_ext; ?>" id="endpoint_ext" name="endpoint_ext" placeholder="M. Conviction">
                   </div>
-                    <label for="endpoint_ext">External Predicates: </label> (<?php echo $externalPredicates; ?>)
+                    <label for="endpoint_ext">Predicantes to external resources: </label> (<?php echo $externalPredicates; ?>)
+					
               </div>
 				
 
                <!-- <div class="col-md-12">
                <div class="form-group">
-               <label for="endpoint_ext">External Predicates: </label> (<?php// echo $externalPredicates; ?>)
+               <label for="endpoint_ext">Predicantes to external resources: </label> (<?php// echo $externalPredicates; ?>)
                      <input type="text" class="form-control"  value="<?php //echo $externalPredicates; ?>" id="edtexternalpredicates" name="edtexternalpredicates" >
                   </div>
               </div> -->

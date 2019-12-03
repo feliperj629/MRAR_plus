@@ -949,7 +949,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                       <label for="endpoint_ext">External endpoint</label>
                       <input type="text" class="form-control"  value="<?php echo $endpoint_ext; ?>" id="endpoint_ext" name="endpoint_ext" placeholder="M. Conviction">
                   </div>
-                    <label for="endpoint_ext">Predicantes to external resources: </label> (<?php echo $externalPredicates; ?>)
+                    <label for="endpoint_ext">Predicates to external resources: </label> (<?php echo $externalPredicates; ?>)
 					
               </div>
 				

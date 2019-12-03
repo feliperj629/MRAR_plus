@@ -287,11 +287,11 @@ class EasyRdf_Sparql_Client
                 return new EasyRdf_Graph($this->queryUri, $response->getBody(), $type);
             }
         } else {
-            // throw new EasyRdf_Exception(
-                // "HTTP request for SPARQL query failed: ".$response->getBody()
-            // );
-            header("Location: /index.php?resp=erro10");
-            exit;
+            throw new EasyRdf_Exception(
+                "HTTP request for SPARQL query failed: ".$response->getBody()
+            );
+            // header("Location: /index.php?resp=erro10");
+            // exit;
 
         }
     }

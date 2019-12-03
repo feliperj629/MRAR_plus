@@ -787,9 +787,10 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
 
    // Setup some additional prefixes for DBpedia
     EasyRdf_Namespace::set('category', 'http://dbpedia.org/resource/Category:');
-    EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
+    EasyRdf_Namespace::set('dbr', 'http://dbpedia.org/resource/');
     EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
     EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
+
 
     $sparql = new EasyRdf_Sparql_Client($endpoint_ext);
 
@@ -798,6 +799,14 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
   {
 	$entities = $this->TratarDados($entities);
 	
+	
+	// $result  = $sparql->query(
+        // 'SELECT distinct ?p ?o
+            // WHERE{
+              // '.$entities.' ?p ?o .
+              // '.$entities.' dbp:longew ?o .
+          // }
+        // ');
     $result  = $sparql->query(
         'SELECT distinct ?p ?o
             WHERE
@@ -854,8 +863,8 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
 function TratarDados($string)
 {
 	//tratamento para evitar erros.
-	$caracteres = array("(", ")", ",");
-	$correcao   = array("\(", "\)", "\,");
+	$caracteres = array("(", ")", ",", "'", '"');
+	$correcao   = array("\(", "\)", "\,", "\'", '\"');
 
 	$novastring = str_replace($caracteres, $correcao, $string);
 	

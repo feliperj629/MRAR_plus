@@ -136,12 +136,16 @@ if(isset($radio))
 // echo '</pre>';
   //------------------------------------------------------------------------------------------------------
 if(!empty($arquivo))
+{
 	$DS = $Classe->PegadadosJson($arquivo,'dados',$_REQUEST['best_support']);
 
-// print 'aqui';
-// print_r($DS);
-// exit;
-
+	print 'Total: ';
+	print_r(count($DS));
+	print '<br> <pre>';
+	print_r($DS);
+	print '</pre>';
+	exit;
+}
 $minsup = '';
 // $minconf = 0.7;
 // $minlevel = 1;

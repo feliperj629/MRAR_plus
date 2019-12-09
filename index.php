@@ -139,12 +139,12 @@ if(!empty($arquivo))
 {
 	$DS = $Classe->PegadadosJson($arquivo,'dados',$_REQUEST['best_support']);
 
-	print 'Total: ';
-	print_r(count($DS));
-	print '<br> <pre>';
-	print_r($DS);
-	print '</pre>';
-	exit;
+	// print 'Total: ';
+	// print_r(count($DS));
+	// print '<br> <pre>';
+	// print_r($DS);
+	// print '</pre>';
+	// exit;
 }
 $minsup = '';
 // $minconf = 0.7;
@@ -266,7 +266,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // print 'Total: '.(count($List_ItemChains));
     // print_r($List_ItemChains);
     // print '</pre>';
-    // exit;
+   // exit;
 
 
      // print 'FIM';
@@ -385,7 +385,8 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // print '<pre>';
     // print '$AllLICs';
     // print_r($AllLICs);
-    // exit;
+	// print '</pre>';
+  //  exit;
 	
 	//$teste++;
 	//print $teste.' - ';
@@ -413,6 +414,11 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // print '$Rules: ';
     // print_r($Rules);
     // exit();
+	
+	if($_REQUEST['reduceGraph']=='on')
+	{
+		$xx = $Classe->reduceGraph($Rules, $List_ItemChains,$DS);
+	}
 
   if($Salvar_Externos)
   {
@@ -991,6 +997,11 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 						<div class="checkbox">
 							<label>
 							  <input type="checkbox" name="GetExternalResources" <?php if(isset($_REQUEST['GetExternalResources']) && $_REQUEST['GetExternalResources'] == 'on') echo 'checked'; ?> > Get external resources for local data
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+							  <input type="checkbox" name="reduceGraph" <?php if(isset($_REQUEST['reduceGraph']) && $_REQUEST['reduceGraph'] == 'on') echo 'checked'; ?> > Reduce Graph
 							</label>
 						</div>
 					

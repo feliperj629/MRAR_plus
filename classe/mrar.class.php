@@ -903,6 +903,138 @@ function PegaLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os
     return $EntitiesExt;
 }
 
+
+
+
+
+function reduceGraph($Rules, $List_ItemChains, $DS)
+{
+	// print 'ZZZZZZZZ';
+	 //print '<pre>';
+	// print_r($Rules);
+	// print_r($List_ItemChains);
+	// print_r($DS);
+	//print '</pre>';
+	
+	$total = count($Rules);
+	$i=1;
+	foreach($Rules as $key => $values)
+	{
+		if($i<$total)
+			$Chains .= $values['Antecedent'].$this->delimiter.$values['Consequent'].$this->delimiter;
+		else
+			$Chains .= $values['Antecedent'].$this->delimiter.$values['Consequent'];
+		
+		$i++;
+	}
+	
+	//Recebe as chaves dos $List_ItemChains dos antecedentes e consequente das regras e remove as duplicações.
+	$Chains = array_unique(explode($this->delimiter, $Chains));
+	//print_r($Chains);
+	//exit;
+	
+	foreach($Chains as $key)
+	{
+		$loes = explode($this->delimiter,$List_ItemChains[$key]['LOE']);
+		//print_r($loes);
+		$lors = array_reverse(explode($this->delimiter,$List_ItemChains[$key]['LOR']));
+		//print_r($lors);
+		
+		//para cada tripla
+		foreach($DS as $keyds =>$tripla)
+		{	//para cada entidade
+			foreach($loes as $loe)
+			{	//para cada relação
+				//Se o sujeito e o predicado forem iguais, guardo a tripla.
+				if($tripla['Subject']==$loe && $tripla['Predicado']==$lors[0])
+				{
+					$DS_reduce[$keyds] = $tripla;	
+					$objetos[$keyds] = $tripla['Object'];
+				}
+			}
+		}
+		//remove valor de array
+		unset($lors[0]);
+		//print_r($lors);
+		$objetos = array_unique($objetos);
+				
+		if(isset($objetos) && isset($lors))
+		{
+			
+			foreach($DS as $keyds =>$tripla)
+			{	
+			
+				foreach($objetos as $objeto)
+				{
+					if($tripla['Subject']==$objeto && $tripla['Predicado']==$lors[1])
+					{
+						$DS_reduce[$keyds] = $tripla;	
+						$objetos[$keyds] = $tripla['Object'];
+					}
+				}
+			}
+		}
+		
+		//remove valor de array
+		unset($lors[1]);
+		//print_r($lors);
+		$objetos = array_unique($objetos);
+				
+		if(isset($objetos) && isset($lors))
+		{
+			
+			foreach($DS as $keyds =>$tripla)
+			{	
+			
+				foreach($objetos as $objeto)
+				{
+					if($tripla['Subject']==$objeto && $tripla['Predicado']==$lors[2])
+					{
+						$DS_reduce[$keyds] = $tripla;	
+						$objetos[$keyds] = $tripla['Object'];
+					}
+				}
+			}
+		}
+		//remove valor de array
+		unset($lors[2]);
+		//print_r($lors);
+		$objetos = array_unique($objetos);
+				
+		if(isset($objetos) && isset($lors))
+		{
+			
+			foreach($DS as $keyds =>$tripla)
+			{	
+			
+				foreach($objetos as $objeto)
+				{
+					if($tripla['Subject']==$objeto && $tripla['Predicado']==$lors[3])
+					{
+						$DS_reduce[$keyds] = $tripla;	
+						$objetos[$keyds] = $tripla['Object'];
+					}
+				}
+			}
+		}
+
+		$objetos = array_unique($objetos);		
+	}
+		ksort($DS_reduce); //ordenar array pelas chaves
+		
+		// print'<pre>';
+		// print'$objetos: ';
+		// print_r($objetos);
+		// print'$DS_reduce: ';
+		// print_r($DS_reduce);
+		// exit;
+		
+		$result = $this->SalvarJson($DS_reduce,$this->nomegrafo,'dados',null);
+		
+	return $result;
+}
+
+
 function SalvarJson($Rules,$nome,$pasta,$original_header_old)
 {
     // print  '<pre>';
@@ -1081,10 +1213,11 @@ function FormataRules($Rules,$List_ItemChains){
 
 
                 // if($j ==31){
-                //     print_r($Rules[$j]);
-                //     print_r($Ant);
-                //     print_r($result3);
-                //     //exit;
+					// print '<pre>';
+                    // print_r($Rules[$j]);
+                    // print_r($Ant);
+                    // print_r($result3);
+                    // exit;
                 // }
 
             }
@@ -1174,7 +1307,12 @@ $htmlTableRules .= '
                   <th> Sup. </th>
                   <th> Conf </th>
                   <th> Lift </th>
-                  <th> Conv. </th></tr>
+                  <th> Conv. </th> ';
+				if($_REQUEST['Entities_Var'] == 'on'){
+					$htmlTableRules .= '<th> Entities_Var </th>';
+				}
+				  
+$htmlTableRules .= '</tr>	  
                 </thead>
                 <tbody>';
 
@@ -1189,9 +1327,13 @@ $row = 1;
                 <td> <h4>".$itemRules['Sup']." </h4></td>
                 <td> <h4>".$itemRules['Conf']." </h4></td>
                 <td> <h4>".$itemRules['Lift']." </h4></td>
-                <td> <h4>".$itemRules['Conviction']." </h4></td>
-           </tr>
-                ";
+                <td> <h4>".$itemRules['Conviction']." </h4></td>";
+			if($_REQUEST['Entities_Var'] == 'on')
+			{
+				$htmlTableRules .= " <td> ".$itemRules['LOE_var']." </td>";
+			}	
+				
+		$htmlTableRules .= " </tr> ";
         // print_r($itemRules);
         // exit;
 
@@ -1206,7 +1348,12 @@ $row = 1;
                   <th> Sup  </th>
                   <th> Conf </th>
                   <th> Lift  </th>
-                  <th> Conv. </th>
+                  <th> Conv. </th> ';
+				if($_REQUEST['Entities_Var'] == 'on'){
+					$htmlTableRules .= '<th> Entities_Var </th>';
+				}
+				  
+			$htmlTableRules .= '
                 </tr>
                 </tfoot>
               </table>';

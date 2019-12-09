@@ -1030,8 +1030,9 @@ function reduceGraph($Rules, $List_ItemChains, $DS)
 		// exit;
 		
 		$result = $this->SalvarJson($DS_reduce,$this->nomegrafo,'dados',null);
+		$total_DSreduce = $this->CalcularTamanhoGrafo(null,$DS_reduce);
 		
-	return $result;
+	return  '<b>'.$total_DSreduce.'</b> nodes and <b>'.count($DS_reduce).'</b> edges!';
 }
 
 

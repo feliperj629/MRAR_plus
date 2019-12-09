@@ -417,7 +417,7 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
 	
 	if($_REQUEST['reduceGraph']=='on')
 	{
-		$xx = $Classe->reduceGraph($Rules, $List_ItemChains,$DS);
+		$total_DSreduce = $Classe->reduceGraph($Rules, $List_ItemChains,$DS);
 	}
 
   if($Salvar_Externos)
@@ -766,7 +766,8 @@ elseif(isset($op) && $op=='rules')
 		<?php }?>
     </section>
 
-<?php if(!empty($resp)){ ?>
+<?php if(!empty($resp))
+		{ ?>
     <div class="pad margin no-print">
       <div class="callout callout-warning" style="margin-bottom: 0!important;">
         <h4><i class="fa fa-warning"></i> Alerta: <?php echo $resp; ?></h4>
@@ -784,7 +785,8 @@ elseif(isset($op) && $op=='rules')
             }if($resp == 'erro6'){
               echo 'Verifique o preenchimento dos campos!';
             }if($resp == 'erro7'){
-              echo 'Verifique sua conexão com a internet e tente novamente!';
+              echo 'Você está sem conexão a internet, verifique a sua conexão e tente novamente!';
+              echo 'Você está sem conexão a internet, verifique a sua conexão e tente novamente!';
             }if($resp == 'erro8'){
               echo 'Não foi possível ler dos dados! <b>'.$Classe->json_msg.'</b>';
             }if($resp == 'erro9'){
@@ -795,31 +797,48 @@ elseif(isset($op) && $op=='rules')
         ?>
       </div>
     </div>
-<?php } if(isset($salverules) && $salverules=='ok_L'){ ?>
+	
+	<?php
+		}
+		if(isset($salverules) && $salverules=='ok_L')
+		{
+			$cor = 'success';
+			$msg = 'As Regras foram salvas com sucesso!';			
+		}
+		if(isset($salverules) && $salverules=='ok_E')
+		{
+			$cor = 'success';
+			$msg = 'Novo dataset criado com sucesso!';			
+		}
+		if(isset($salverules) && $salverules=='erro_E')
+		{
+			$cor = 'danger';
+			$msg = 'Não foi possível criar o novo dataset!';			
+		}
+		if(!empty($TotalNewDS))
+		{
+			$cor = 'success';
+			$msg = "A new dataset was created with a total of $TotalNewDS";			
+		}
+		if(!empty($total_DSreduce))
+		{
+			$cor = 'success';
+			$msg = "A new dataset was created with a total of $total_DSreduce";			
+		}
+	
+	if(!empty($msg))
+	{
+	?>
+	
     <div class="pad margin no-print">
-      <div class="callout callout-success" style="margin-bottom: 0!important;">
-        <h4><i class="fa fa-warning"></i> As Regras foram salvas com sucesso!</h4>
+      <div class="callout callout-<?php echo $cor; ?>" style="margin-bottom: 0!important;">
+        <h4><i class="fa fa-warning"></i> <?php echo $msg; ?> </h4>
       </div>
     </div>
-<?php } if(isset($salverules) && $salverules=='ok_E'){ ?>
-    <div class="pad margin no-print">
-      <div class="callout callout-success" style="margin-bottom: 0!important;">
-        <h4><i class="fa fa-warning"></i> Novo dataset criado com sucesso!</h4>
-      </div>
-    </div>
-<?php } if(isset($salverules) && $salverules=='erro_E'){ ?>
-    <div class="pad margin no-print">
-      <div class="callout callout-danger" style="margin-bottom: 0!important;">
-        <h4><i class="fa fa-warning"></i> Não foi possível criar o novo dataset!</h4>
-      </div>
-    </div>
-<?php } if(!empty($TotalNewDS)){ ?>
-    <div class="pad margin no-print">
-      <div class="callout callout-success" style="margin-bottom: 0!important;">
-        <h4><i class="fa fa-warning"></i> A new dataset was created with a total of <?php echo $TotalNewDS; ?> </h4>
-      </div>
-    </div>
-<?php } ?>
+<?php 
+	}
+?>
+
 
 
 
@@ -1001,7 +1020,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 						</div>
 						<div class="checkbox">
 							<label>
-							  <input type="checkbox" name="reduceGraph" <?php if(isset($_REQUEST['reduceGraph']) && $_REQUEST['reduceGraph'] == 'on') echo 'checked'; ?> > Reduce Graph
+							  <input type="checkbox" name="reduceGraph" <?php //if(isset($_REQUEST['reduceGraph']) && $_REQUEST['reduceGraph'] == 'on') echo 'checked'; ?> > Reduce Graph
 							</label>
 						</div>
 					
@@ -1518,7 +1537,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 		?>
 		var msgjs = "<?php echo $msg;?>";
 	     if(msgjs) {
-	       alert(msgjs);
+	       //alert(msgjs);
 	       window.location="/index.php?resp=erro7";
 	       exit;
 	     }

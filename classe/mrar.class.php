@@ -1297,7 +1297,7 @@ function MontaTabelaRules($FormatacaoRules){
     // print_r($FormatacaoRules);
     // exit;
 $htmlTableRules .= '
-        <table id="tabela" class="table table-bordered table-hover sortable" >
+        <table id="tblResultados" class="table table-bordered table-hover sortable" >
 
                 <thead>
 
@@ -1362,6 +1362,60 @@ $row = 1;
   return $htmlTableRules;
 
 }
+
+function ExportaRules_xls($htmlTableRules, $arquivo)
+{
+	// print $htmlTableRules;
+	// exit;
+	$htmlTableRules = str_replace('class="table table-bordered table-hover sortable"',' border="1" ', $htmlTableRules);
+	$htmlTableRules = str_replace('<input class="form-control" placeholder="Antecedent" type="text" id="txtColuna1"/>','Antecedent', $htmlTableRules);
+	$htmlTableRules = str_replace('<input class="form-control" placeholder="Consequent" type="text" id="txtColuna2"/>','Antecedent', $htmlTableRules);
+	
+	if(!empty($htmlTableRules))
+	{   
+	    $file = $arquivo.'.xls';
+		header ("Content-type: application/x-msexcel");
+		header ("Content-Disposition: attachment; filename=\"{$file}\"" );
+		header ("Content-Description: PHP Generated Data" );
+
+	   // Imprime o conteúdo da nossa tabela no arquivo que será gerado
+	   echo $htmlTableRules;
+	   exit;
+	}
+	return;
+}
+/* //function ExportaRules_csv($FormatacaoRules, $arquivo)
+function ExportaRules_csv($data,$filename='export',$delimiter = ';',$enclosure = '"')
+{
+	// print '<pre>';
+	// print_r(array_keys($data[1]));
+	//exit;
+	
+    // Tells to the browser that a file is returned, with its name : $filename.csv
+    header("Content-disposition: attachment; filename=$filename.csv");
+    // Tells to the browser that the content is a csv file
+    header("Content-Type: text/csv");
+
+    // I open PHP memory as a file
+    $fp = fopen("php://output", 'w');
+
+    // Insert the UTF-8 BOM in the file
+    fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+
+    // I add the array keys as CSV headers
+    fputcsv($fp,array_keys($data[1]),$delimiter,$enclosure);
+
+    // Add all the data in the file
+    foreach ($data as $fields) {
+        fputcsv($fp, $fields['Conviction'],$delimiter,$enclosure);
+    }
+
+    // Close the file
+    fclose($fp);
+
+    // Stop the script
+    die();
+} */
 
 
 }

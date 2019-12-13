@@ -527,8 +527,9 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
     // print '<br>$Rules: ';
     // print_r($Rules);
 
-
-    $htmlTable = $Classe->MontaTabela($Rules);
+	if($_REQUEST['Entities_Var']!='on')
+		$htmlTable = $Classe->MontaTabela($Rules);
+	
 	//$_SESSION['s_Rules'] = null;
 	$FormatacaoRules = null;
     $FormatacaoRules = $Classe->FormataRules($Rules,$List_ItemChains);
@@ -558,7 +559,15 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
       echo $htmlTableRules;
       exit;
     }
-
+	
+	if($_REQUEST['op']=='ExRules_xls')
+	{	
+		$Classe->ExportaRules_xls($htmlTableRules, $arquivo);
+	}
+	// if($_REQUEST['op']=='ExRules_csv')
+	// {	
+		// $Classe->ExportaRules_csv($FormatacaoRules, $arquivo, $delimiter, $aspas);
+	// }
 
 
 
@@ -1042,7 +1051,12 @@ if(!empty($_REQUEST['edtMetricConviction'])){
                 <button type="button" class="btn btn-primary" onclick="gerarregras();exibe('loading');" title="Minerar dados (DT A)">MRAR</button>
                 <button type="button" class="btn btn-warning" onclick="gerarComLinkExterno();ping();exibe('loading');" title="Minerar dados e gerar novo dataset com os links externos (DT A+)">MRAR+</button>
                 <button type="button" class="btn btn-success" onclick="salvarRegras();" title="Salvar Regras geradas em diretório de trabalho">Save Rules</button>
-              </div>
+                <button type="button" class="btn btn-default" onclick="ExportaRules();" title="Executa o MRAR e exporta as regras">Export Rules</button>
+              
+			  
+			  
+			  
+			  </div>
             </div>
             </form>
           </div>
@@ -1528,6 +1542,12 @@ if(!empty($_REQUEST['edtMetricConviction'])){
         document.getElementById('frm').action='index.php?op=rules';
         document.getElementById('frm').submit();
 
+  }
+  
+  function ExportaRules()
+  {
+		document.getElementById('frm').action='index.php?op=ExRules_xls';
+		document.getElementById('frm').submit();
   }
 
   function ping(){

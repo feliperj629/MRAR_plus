@@ -710,15 +710,31 @@ function ConvertConviction($Rules, $Conviction_min, $Conviction_max){
 
 }
 
-
-function PegadadosJson($arquivo,$key,$bestsup){
-	// print '<br>$arquivo: '.$arquivo;
-	// print '<br>$key: '.$key;
-	// print '<br>$bestsup: '.$bestsup;
-	// exit;
-	// print $arquivo;
+function PegadadosJson($arquivo,$key,$bestsup,$rdf=false){
+    if($rdf){
+        $info = "{\"dados\": [";
+        $arq = fopen($arquivo,"r");
+        while(!feof($arq)) {
+            $result = fgets($arq);
+            $sujeito = substr($result, 0,strpos($result," "));
+            $inicio_predicado = strpos($result," ") + 1;
+            $inicio_objeto = strpos($result," ",strpos($result," ") + 1);
+            $predicado = substr($result, $inicio_predicado, $inicio_objeto - $inicio_predicado);
+            $objeto = substr($result, $inicio_objeto + 1, strpos($result,".") - $inicio_objeto - 2);
+            $info .= "{\"Subject\": \"" . $sujeito . "\",";
+            $info .= "\"Predicado\": \"" . $predicado . "\",";
+            $info .= "\"Object\": \"" . $objeto . "\"},";
+        }// end while
+        fclose($arq);
+        $info = substr($info, 0, -1);
+        $info .= "]}";
+    } else {
 	$info = file_get_contents($arquivo);
+    }
 	$DS_total = json_decode($info, true);
+
+    //var_dump($DS_total);
+    //die();
 
 	// print '<br> Total array Json:'.count($DS_total[$key]);
 	// exit;
@@ -1419,5 +1435,3 @@ function ExportaRules_csv($data,$filename='export',$delimiter = ';',$enclosure =
 
 
 }
-
-?>

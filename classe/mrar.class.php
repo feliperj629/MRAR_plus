@@ -791,22 +791,13 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
     EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
     EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
 
-
     $sparql = new EasyRdf_Sparql_Client($endpoint_ext);
 
 
   foreach ($Entitiesfinal as $key => $entities)
   {
 	$entities = $this->TratarDados($entities);
-	
-	
-	// $result  = $sparql->query(
-        // 'SELECT distinct ?p ?o
-            // WHERE{
-              // '.$entities.' ?p ?o .
-              // '.$entities.' dbp:longew ?o .
-          // }
-        // ');
+			
     $result  = $sparql->query(
         'SELECT distinct ?p ?o
             WHERE
@@ -814,9 +805,11 @@ function PegaDadosExternos($Entitiesfinal,$DS,$nomegrafo,$endpoint_ext)
                   <http://dbpedia.org/ontology/team> ?o
             }
         ');
+		
     // print"<pre>";
     // print_r($result);
-    //exit;
+    // exit;
+	
       foreach ($result as $key2 => $row)
       {
         if($row->p <> 'http://dbpedia.org/ontology/wikiPageWikiLink') //Toda consulta retorna com a página de origem, por isso estou removendo este item

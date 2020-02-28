@@ -799,7 +799,7 @@ elseif(isset($op) && $op=='rules')
             }if($resp == 'erro8'){
               echo 'Não foi possível ler dos dados! <b>'.$Classe->json_msg.'</b>';
             }if($resp == 'erro9'){
-              echo 'Não foi possível encontrar os links externos dos recursos! Verifique se os recusos possuem alguma relação com algum dos "Predicantes to external resources" para as relações presentes no arquivo "links_ex/links.json". </b>';
+              echo 'Não foi possível encontrar os links externos dos recursos! Verifique se os recusos possuem alguma relação com algum dos "Predicantes to external resources" das relações presentes no arquivo "links_ex/links.json". </b>';
             }if($resp == 'erro10'){
               echo 'Não foi possível executar o comando do SPAQL Query. Verifique a função <b>PegaDadosExternos</b>. </b>';
             }

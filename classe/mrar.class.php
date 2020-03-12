@@ -36,6 +36,7 @@ class Mrar
 
     var $EndPoints_Ant;
     var $EndPoints_Cons;
+    var $AllEndpointEntity;
 
     var $Conviction_min;
     var $Conviction_max;
@@ -459,13 +460,17 @@ $total = count($List_ItemChains);
 
         // Mostar a comparação 1-2, 1-3, 1-4, 1-5, .... 2-3, 2-4, 2-5 ...
         // print '<br><br><br>'.$i.' - '.$j.'<br>';
-        //print '<pre>';
-        //print_r($IC1[LOE]);
-        //print_r($IC2[LOE]);
-        //print_r(array_intersect($IC1[LOE], $IC2[LOE]));
-
-        // print_r(array_intersect($IC1[LOE], $IC2[LOE]));
-        //exit;
+       // print '<pre>';
+       // print_r($IC1['LOE']);
+        // print_r($IC2['LOE']);
+        //print_r($List_ItemChains[$i]['EndpointEntity']);
+        //print_r($List_ItemChains[$j]['EndpointEntity']);
+      //  print_r(array_intersect($IC1['LOE'], $IC2['LOE']));
+	   // print_r(array_intersect($IC1['LOE'], $IC2['LOE']));
+		$AllEndpointEntity[] = $List_ItemChains[$i]['EndpointEntity'];
+		$AllEndpointEntity[] = $List_ItemChains[$j]['EndpointEntity'];
+        // print_r($EndpointEntity);
+        // exit;
         $LOE = count(array_intersect($IC1['LOE'], $IC2['LOE']));
 
 
@@ -506,13 +511,16 @@ $total = count($List_ItemChains);
     }
   }
   // print('aqui<br><br><br>');
-  // print '<pre>';
+	//print '<pre>';
   // print '$Entities_DtLocal: <br><br>';
   // print_r($Entities_DtLocal);
   // print '$LargeItemChain: <br><br><br><br>';
   // print_r($LargeItemChain);
+  // print_r($AllEndpointEntity);
   // exit();
-
+	$this->AllEndpointEntity = array_unique($AllEndpointEntity);
+	//print_r($AllEndpointEntity);
+	//exit();
   //juntar array e remover duplicidade
   if($ExtLink)
       $this->Entities_DtLocal = array_unique(explode($this->delimiter, implode($this->delimiter, $Entities_DtLocal)));
@@ -903,11 +911,12 @@ function PegaLinksExternos($entitiesLocais, $externalPredicates, $DS) //pegar os
 function reduceGraph($Rules, $List_ItemChains, $DS)
 {
 	// print 'ZZZZZZZZ';
-	 //print '<pre>';
+	 // print '<pre>';
 	// print_r($Rules);
 	// print_r($List_ItemChains);
 	// print_r($DS);
-	//print '</pre>';
+	// print '</pre>';
+	// exit;
 	
 	$total = count($Rules);
 	$i=1;

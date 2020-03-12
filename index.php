@@ -81,6 +81,17 @@ if(isset($_REQUEST['comp_dados']))
 if(isset($_REQUEST['comp_dados2']))
 	$dados2 = $_REQUEST['comp_dados2'];
 
+
+//Leitura N-triples
+$rdf = false;
+if(isset($_REQUEST['rdRdf']))
+	$rdf = true;
+//Leitura N-triples
+
+
+
+
+
 // print '$dados:';
 // if(!empty($dados))
 	//print_r ($dados);
@@ -137,7 +148,7 @@ if(isset($radio))
   //------------------------------------------------------------------------------------------------------
 if(!empty($arquivo))
 {
-	$DS = $Classe->PegadadosJson($arquivo,'dados',$_REQUEST['best_support']);
+	$DS = $Classe->PegadadosJson($arquivo,'dados',$_REQUEST['best_support'], $rdf);//Leitura N-triples
 
 	// print 'Total: ';
 	// print_r(count($DS));
@@ -775,8 +786,7 @@ elseif(isset($op) && $op=='rules')
 		<?php }?>
     </section>
 
-<?php if(!empty($resp))
-		{ ?>
+<?php if(!empty($resp)){ ?>
     <div class="pad margin no-print">
       <div class="callout callout-warning" style="margin-bottom: 0!important;">
         <h4><i class="fa fa-warning"></i> Alerta: <?php echo $resp; ?></h4>
@@ -794,8 +804,7 @@ elseif(isset($op) && $op=='rules')
             }if($resp == 'erro6'){
               echo 'Verifique o preenchimento dos campos!';
             }if($resp == 'erro7'){
-              echo 'Você está sem conexão a internet, verifique a sua conexão e tente novamente!';
-              echo 'Você está sem conexão a internet, verifique a sua conexão e tente novamente!';
+              echo 'Verifique sua conexão com a internet e tente novamente!';
             }if($resp == 'erro8'){
               echo 'Não foi possível ler dos dados! <b>'.$Classe->json_msg.'</b>';
             }if($resp == 'erro9'){
@@ -847,7 +856,6 @@ elseif(isset($op) && $op=='rules')
 <?php 
 	}
 ?>
-
 
 
 
@@ -1048,14 +1056,11 @@ if(!empty($_REQUEST['edtMetricConviction'])){
               <!-- /.box-body -->
 
               <div class="box-footer">
+                <input type="checkbox" name="rdRdf" id="rdRdf" value="ok"> <label for="rdRdf">RDF</label><!--//Leitura N-triples-->
                 <button type="button" class="btn btn-primary" onclick="gerarregras();exibe('loading');" title="Minerar dados (DT A)">MRAR</button>
                 <button type="button" class="btn btn-warning" onclick="gerarComLinkExterno();ping();exibe('loading');" title="Minerar dados e gerar novo dataset com os links externos (DT A+)">MRAR+</button>
                 <button type="button" class="btn btn-success" onclick="salvarRegras();" title="Salvar Regras geradas em diretório de trabalho">Save Rules</button>
                 <button type="button" class="btn btn-default" onclick="ExportaRules();" title="Executa o MRAR e exporta as regras">Export Rules</button>
-              
-			  
-			  
-			  
 			  </div>
             </div>
             </form>
@@ -1213,7 +1218,7 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 <?php }
 		if(!empty($htmlTableRules)){  ?>
       <div class="col-md-12" style="overflow:auto;height:500px; width:1245px">
-          <div class="box box-warning"">
+          <div class="box box-warning">
            <div class="box-header with-border">
               <h3 class="box-title">Formatted Rules </h3>
 

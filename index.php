@@ -424,10 +424,19 @@ if((!empty($minsup) && !empty($minconf) && !empty($minlevel) && !empty($maxlevel
   {
 	//if(empty($local_link))
 	//{
-        ////Apenas os recrusos que dão suporte as regras. (entidade de onde se iniciam os caminhos)
+        ////Apenas os recusos que dão suporte as regras. (entidade de onde se iniciam os caminhos)
         //$entitiesLocais = $Classe->Entities_DtLocal;
 		
-		if(!isset($_REQUEST['GetExternalResources']))
+		if(isset($_REQUEST['GetExternalResources_for_endpoint']) && $_REQUEST['GetExternalResources_for_endpoint'] == 'on')
+		{
+			////Pegar endpoints com links externos (sameAs e etc... Com base no arquivo "links_ex/links.json")
+			$entitiesFinais = $Classe->PegaLinksExternos($Classe->AllEndpointEntity, $externalPredicates_array, $DS);
+			print '<pre>';
+			print_r($entitiesFinais);
+			print '</pre>';
+			exit;
+		}
+		elseif(!isset($_REQUEST['GetExternalResources']) && $_REQUEST['GetExternalResources'] == 'on')
 		{
 			////Pegar entidades com links externos (sameAs e etc... Com base no arquivo "links_ex/links.json")
 			$entitiesFinais = $Classe->PegaLinksExternos($Classe->Entities_DtLocal, $externalPredicates_array, $DS);
@@ -1025,6 +1034,11 @@ if(!empty($_REQUEST['edtMetricConviction'])){
 						<div class="checkbox">
 							<label>
 							  <input type="checkbox" name="GetExternalResources" <?php if(isset($_REQUEST['GetExternalResources']) && $_REQUEST['GetExternalResources'] == 'on') echo 'checked'; ?> > Get external resources for local data
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+							  <input type="checkbox" name="GetExternalResources_for_endpoint" <?php if(isset($_REQUEST['GetExternalResources_for_endpoint']) && $_REQUEST['GetExternalResources_for_endpoint'] == 'on') echo 'checked'; ?> > Get external resources for endpoint
 							</label>
 						</div>
 						<div class="checkbox">
